@@ -17,7 +17,6 @@ import useStyles from "./styles";
 
 // logo
 import logo from "./logo.svg";
-import google from "../../images/google.svg";
 
 // context
 import {useUserDispatch, loginUser} from "../../context/UserContext";
@@ -40,7 +39,7 @@ function Login(props) {
         <Grid container className={classes.container}>
             <div className={classes.logotypeContainer}>
                 <img src={logo} alt="logo" className={classes.logotypeImage}/>
-                <Typography className={classes.logotypeText}>Material Admin</Typography>
+                <Typography className={classes.logotypeText}>CodeGenApps</Typography>
             </div>
             <div className={classes.formContainer}>
                 <div className={classes.form}>
@@ -57,22 +56,8 @@ function Login(props) {
                     {activeTabId === 0 && (
                         <React.Fragment>
                             <Typography variant="h1" className={classes.greeting}>
-                                Good Morning, User
+                                Hi, Good Day
                             </Typography>
-                            <Button size="large" className={classes.googleButton}>
-                                <img src={google} alt="google" className={classes.googleIcon}/>
-                                &nbsp;Sign in with Google
-                            </Button>
-                            <div className={classes.formDividerContainer}>
-                                <div className={classes.formDivider}/>
-                                <Typography className={classes.formDividerWord}>or</Typography>
-                                <div className={classes.formDivider}/>
-                            </div>
-                            <Fade in={error}>
-                                <Typography color="secondary" className={classes.errorMessage}>
-                                    Something is wrong with your login or password :(
-                                </Typography>
-                            </Fade>
                             <TextField
                                 id="company-name"
                                 InputProps={{
@@ -243,21 +228,6 @@ function Login(props) {
                                     </Button>
                                 )}
                             </div>
-                            <div className={classes.formDividerContainer}>
-                                <div className={classes.formDivider}/>
-                                <Typography className={classes.formDividerWord}>or</Typography>
-                                <div className={classes.formDivider}/>
-                            </div>
-                            <Button
-                                size="large"
-                                className={classnames(
-                                    classes.googleButton,
-                                    classes.googleButtonCreating,
-                                )}
-                            >
-                                <img src={google} alt="google" className={classes.googleIcon}/>
-                                &nbsp;Sign in with Google
-                            </Button>
                         </React.Fragment>
                     )}
                 </div>
