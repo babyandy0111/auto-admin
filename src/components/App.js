@@ -13,7 +13,7 @@ import { useUserState } from "../context/UserContext";
 
 export default function App() {
   // global
-  var { isAuthenticated } = useUserState();
+  const { isAuthenticated } = useUserState();
 
   return (
     <HashRouter>
@@ -30,8 +30,6 @@ export default function App() {
       </Switch>
     </HashRouter>
   );
-
-  // #######################################################################
 
   function PrivateRoute({ component, ...rest }) {
     return (
