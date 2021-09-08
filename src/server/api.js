@@ -8,9 +8,16 @@ const API = {
     postAccount(params) {
         return apiPost(apiUrl.accounts, params)
     },
-    getLogsMetrics(params){
+    getLogsMetrics(params) {
         return apiGet(apiUrl.logsMetrics, params)
+    },
+    getResourcesMysql(params) {
+        return apiGet(apiUrl.resourcesMysql, params)
+    },
+    getResourcesSubdomain(params) {
+        return apiGet(apiUrl.resourcesSubdomain, params)
     }
+
 }
 
 export default API
