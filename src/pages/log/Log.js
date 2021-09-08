@@ -44,8 +44,16 @@ const Log = (props) => {
     }
 
     useEffect(() => {
+        //componentDidMount 及 componentDidUpdate
+        console.log(`更新後的 State ${logsData}`)
+    })
 
-    });
+    useEffect(() => {
+        //componentDidUpdate 及 componentWillUnmount
+        return (() => {
+            console.log(`更新前的 State ${logsData}`)
+        })
+    })
 
     return (
         <>
