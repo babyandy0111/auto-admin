@@ -1,4 +1,4 @@
-import {apiPost} from './http'
+import {apiGet, apiPost} from './http'
 import apiUrl from './base'
 
 const API = {
@@ -7,6 +7,9 @@ const API = {
     },
     postAccount(params) {
         return apiPost(apiUrl.accounts, params)
+    },
+    getLogsMetrics(params){
+        return apiGet(apiUrl.logsMetrics, params)
     }
 }
 

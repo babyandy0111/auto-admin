@@ -43,11 +43,11 @@ const PieChartData = [
 ];
 
 export default function Dashboard(props) {
-  var classes = useStyles();
-  var theme = useTheme();
+  const classes = useStyles();
+  const theme = useTheme();
 
   // local
-  var [mainChartState, setMainChartState] = useState("monthly");
+  const [mainChartState, setMainChartState] = useState("monthly");
 
   return (
     <>
@@ -429,7 +429,7 @@ export default function Dashboard(props) {
 
 // #######################################################################
 function getRandomData(length, min, max, multiplier = 10, maxDiff = 10) {
-  var array = new Array(length).fill();
+  const array = new Array(length).fill();
   let lastValue;
 
   return array.map((item, index) => {
@@ -450,10 +450,10 @@ function getRandomData(length, min, max, multiplier = 10, maxDiff = 10) {
 }
 
 function getMainChartData() {
-  var resultArray = [];
-  var tablet = getRandomData(31, 3500, 6500, 7500, 1000);
-  var desktop = getRandomData(31, 1500, 7500, 7500, 1500);
-  var mobile = getRandomData(31, 1500, 7500, 7500, 1500);
+  const resultArray = [];
+  const tablet = getRandomData(31, 3500, 6500, 7500, 1000);
+  const desktop = getRandomData(31, 1500, 7500, 7500, 1500);
+  const mobile = getRandomData(31, 1500, 7500, 7500, 1500);
 
   for (let i = 0; i < tablet.length; i++) {
     resultArray.push({

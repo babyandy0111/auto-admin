@@ -1,8 +1,15 @@
 import qs from 'querystring'
 
-export function apiGet(url) {
-    reqSetLog(url, null)
-    return fetch(url).then(res => {
+export function apiGet(url, params) {
+    reqSetLog(url, params)
+    url = url + "?" + qs.stringify(params);
+    return fetch(url, {
+        method: 'GET',
+        headers: {
+            'content-type': 'application/json',
+            'Bearer': localStorage.getItem("id_token"),
+        }
+    }).then(res => {
         resSetLog(url, res)
         return res.json()
     })
@@ -14,7 +21,7 @@ export function apiForm(url, params) {
         method: 'POST',
         headers: {
             'content-type': 'application/x-www-form-urlencoded',
-            'accept': 'application/json,text/plain,*/*'
+            'Bearer': localStorage.getItem("id_token")
         },
         body: qs.stringify(params)
     }).then(res => {
@@ -29,7 +36,7 @@ export function apiPost(url, params) {
         method: 'POST',
         headers: {
             'content-type': 'application/json',
-            'accept': 'application/json,text/plain,*/*'
+            'Bearer': localStorage.getItem("id_token")
         },
         body: JSON.stringify(params),
         mode: 'cors', // no-cors, cors, *same-origin
@@ -45,10 +52,6 @@ export function apiPost(url, params) {
 }
 
 function reqSetLog(url, params) {
-    if (params == null) {
-        console.log(`request ${url}`)
-        return
-    }
     console.log(`request ${url} : `, params)
 }
 

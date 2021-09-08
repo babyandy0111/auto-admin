@@ -16,6 +16,7 @@ import Sidebar from "../Sidebar";
 // pages
 import Dashboard from "../../pages/dashboard";
 import StorageS3 from "../../pages/storages3";
+import Log from "../../pages/log";
 import Typography from "../../pages/typography";
 import Notifications from "../../pages/notifications";
 import Maps from "../../pages/maps";
@@ -44,8 +45,9 @@ function Layout(props) {
                 <div className={classes.fakeToolbar}/>
                 <Switch>
                     <Route exact path="/app/dashboard"/>
+                    <Route path="/app/dashboard/test" component={Dashboard}/>
                     <Route path="/app/dashboard/storage" component={StorageS3}/>
-                    <Route path="/app/dashboard/log" component={Dashboard}/>
+                    <Route path="/app/dashboard/log" component={Log}/>
                     <Route path="/app/typography" component={Typography}/>
                     <Route path="/app/tables" component={Tables}/>
                     <Route path="/app/notifications" component={Notifications}/>

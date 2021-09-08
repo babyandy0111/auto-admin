@@ -1,0 +1,6 @@
+{
+  "name": "Log",
+  "version": "1.0.0",
+  "private": true,
+  "main": "Log.js"
+}
