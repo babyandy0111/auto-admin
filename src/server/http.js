@@ -1,8 +1,8 @@
 import qs from 'querystring'
 
 export function apiGet(url, params) {
-    reqSetLog(url, params)
     url = url + "?" + qs.stringify(params);
+    reqSetLog(url, params)
     return fetch(url, {
         method: 'GET',
         headers: {
@@ -11,7 +11,11 @@ export function apiGet(url, params) {
         }
     }).then(res => {
         resSetLog(url, res)
-        return res.json()
+        if (res.status === 200) {
+            return res.json()
+        } else {
+            return {"error": res.status}
+        }
     })
 }
 
@@ -26,11 +30,15 @@ export function apiForm(url, params) {
         body: qs.stringify(params)
     }).then(res => {
         resSetLog(url, res)
-        return res.json()
+        if (res.status === 200) {
+            return res.json()
+        } else {
+            return {"error": res.status}
+        }
     })
 }
 
-export function apiPost(url, params) {
+export function apiPost(url, params, history) {
     reqSetLog(url, params)
     return fetch(url, {
         method: 'POST',
@@ -46,7 +54,7 @@ export function apiPost(url, params) {
         if (res.status === 200) {
             return res.json()
         } else {
-            return {"error": "api error"}
+            return {"error": res.status}
         }
     })
 }

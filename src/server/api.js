@@ -16,8 +16,10 @@ const API = {
     },
     getResourcesSubdomain(params) {
         return apiGet(apiUrl.resourcesSubdomain, params)
+    },
+    getLogs(params) {
+        return apiGet(apiUrl.logs, params)
     }
-
 }
 
 export default API

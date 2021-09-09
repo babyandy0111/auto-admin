@@ -7,32 +7,41 @@ import PageTitle from "../../components/PageTitle";
 import Widget from "../../components/Widget";
 import {Typography} from "../../components/Wrappers";
 import useStyles from "../dashboard/styles";
-import {ToastContainer} from "react-toastify";
 import {Select} from "antd";
-import 'react-toastify/dist/ReactToastify.css';
 import "antd/dist/antd.css";
 import "react-datepicker/dist/react-datepicker.css";
+import {useUserDispatch, signOut} from "../../context/UserContext";
+import MUIDataTable from "mui-datatables";
 
-const metrics = {
-    request_count: 0,
-    request_total: 0,
-    response_seconds: 0.0,
-    response_total: 0
+const diffDays = (days) => {
+    let result = new Date();
+    result.setDate(result.getDate() - days);
+    return result;
 }
-const resourceData = [{id: '0', name: "請選擇"}];
-const subdomainData = [{id: '0', name: "請選擇"}];
 
 const Log = (props) => {
     const Option = Select.Option;
     const nowDate = new Date();
-    const [startDate, setStartDate] = useState(nowDate);
+    const difDate = diffDays(10);
+    const resourceData = [{id: '0', name: "請選擇"}];
+    const subdomainData = [{id: '0', name: "請選擇"}];
+    const userDispatch = useUserDispatch();
+    const [startDate, setStartDate] = useState(difDate);
     const [endDate, setEndDate] = useState(nowDate);
-    const [startStrDate, setStartStrDate] = useState(moment(new Date(nowDate)).utc().format("YYYY-MM-DDThh:mm:ss[Z]"));
+    const [startStrDate, setStartStrDate] = useState(moment(new Date(difDate)).utc().format("YYYY-MM-DDThh:mm:ss[Z]"));
     const [endStrDate, setEndStrDate] = useState(moment(new Date(nowDate)).utc().format("YYYY-MM-DDThh:mm:ss[Z]"));
-    const [logsData, setLogsData] = useState(metrics)
+    const [metricsData, setMetricsData] = useState({
+        request_count: 0,
+        request_total: 0,
+        response_seconds: 0.0,
+        response_total: 0
+    });
+    const [logsData, setLogsData] = useState([])
     const [resources, setResources] = useState(resourceData);
     const [subdomain, setSubDomainData] = useState(subdomainData);
+    const [selectSubdomain, setSelectSubdomain] = useState()
     const classes = useStyles();
+    const history = props.history
 
     const startDataChangeHandle = (date) => {
         setStartDate(date);
@@ -45,17 +54,27 @@ const Log = (props) => {
     };
 
     const searchLogsHandle = (e) => {
-        API.getLogsMetrics({start_time: startStrDate, end_time: endStrDate}).then(data => {
-            setLogsData(data)
-        })
+        API.getLogsMetrics({start_time: startStrDate, end_time: endStrDate})
+            .then(metrics => {
+                setMetricsData(metrics)
+            });
+
+        API.getLogs({subdomain_name: selectSubdomain, type: 'request', start_time: startStrDate, end_time: endStrDate})
+            .then((Logs) => {
+                if (Logs.error === 401) {
+                    signOut(userDispatch, history)
+                } else {
+                    setLogsData(Logs.logs)
+                }
+            });
     }
 
-    const resourcesChangeHandle = value => {
-        console.log(value)
+    const resourcesChangeHandle = (e) => {
+        console.log(e)
     };
 
-    const subdomainChangeHandle = value => {
-        console.log(value)
+    const subdomainChangeHandle = (value) => {
+        setSelectSubdomain(value);
     };
 
     useEffect(() => {
@@ -63,17 +82,21 @@ const Log = (props) => {
         Promise.all([
             API.getLogsMetrics({start_time: startStrDate, end_time: endStrDate}),
             API.getResourcesMysql({page: 1, per_page: 10}),
-            API.getResourcesSubdomain({page: 1, per_page: 10})
-        ]).then(([LogsMetrics, ResourcesMysql, ResourcesSubdomain]) => {
-            ResourcesMysql.resources.map(arr => {
-                resourceData.push({id: arr.id, name: arr.name})
-            })
-            ResourcesSubdomain.resources.map(arr => {
-                subdomainData.push({id: arr.id, name: arr.name})
-            })
-            setLogsData(LogsMetrics)
-            setResources(resourceData);
-            setSubDomainData(subdomainData)
+            API.getResourcesSubdomain({page: 1, per_page: 10}),
+        ]).then(([Metrics, ResourcesMysql, ResourcesSubdomain]) => {
+            if (Metrics.error === 401 || ResourcesMysql.error === 401 || ResourcesSubdomain.error === 401) {
+                signOut(userDispatch, history)
+            } else {
+                ResourcesMysql.resources.map(arr => {
+                    resourceData.push({id: arr.id, name: arr.name})
+                })
+                ResourcesSubdomain.resources.map(arr => {
+                    subdomainData.push({id: arr.id, name: arr.name})
+                })
+                setMetricsData(Metrics)
+                setResources(resourceData);
+                setSubDomainData(subdomainData)
+            }
         }).catch((err) => {
             console.log(err);
         });
@@ -84,39 +107,36 @@ const Log = (props) => {
             <PageTitle title="LOG"
                        button={<Button variant="contained" size="medium" color="secondary" onClick={searchLogsHandle}>Latest
                            Reports</Button>}/>
-            <ToastContainer/>
+
             <Select defaultValue={resources[0].name} style={{width: 120}} onChange={resourcesChangeHandle}>
                 {resources.map(resData => (
-                    <Option key={resData.id}>{resData.name}</Option>
+                    <Option key={resData.id} value={resData.name}>{resData.name}</Option>
                 ))}
             </Select>
             <Select defaultValue={subdomain[0].name} style={{width: 120}} onChange={subdomainChangeHandle}>
-                {subdomain.map(resData => (
-                    <Option key={resData.id}>{resData.name}</Option>
+                {subdomain.map(subData => (
+                    <Option key={subData.id} value={subData.name}>{subData.name}</Option>
                 ))}
             </Select>
-            <div>
-                <DatePicker
-                    showTimeSelect
-                    selected={startDate}
-                    onChange={startDataChangeHandle}
-                    selectsStart
-                    startDate={startDate}
-                    endDate={endDate}
-                    dateFormat="yyyy/MM/d h:mm aa"
-                />
-                <DatePicker
-                    showTimeSelect
-                    selected={endDate}
-                    onChange={endDataChangeHandle}
-                    selectsEnd
-                    startDate={startDate}
-                    endDate={endDate}
-                    minDate={startDate}
-                    dateFormat="yyyy/MM/d h:mm aa"
-                />
-            </div>
-
+            <DatePicker
+                showTimeSelect
+                selected={startDate}
+                onChange={startDataChangeHandle}
+                selectsStart
+                startDate={startDate}
+                endDate={endDate}
+                dateFormat="yyyy/MM/d h:mm aa"
+            />
+            <DatePicker
+                showTimeSelect
+                selected={endDate}
+                onChange={endDataChangeHandle}
+                selectsEnd
+                startDate={startDate}
+                endDate={endDate}
+                minDate={startDate}
+                dateFormat="yyyy/MM/d h:mm aa"
+            />
             <Grid container spacing={4}>
                 <Grid item lg={3} md={4} sm={6} xs={12}>
                     <Widget
@@ -129,7 +149,7 @@ const Log = (props) => {
                             <Grid container item alignItems={"center"}>
                                 <Grid item xs={6}>
                                     <Typography size="xl" weight="medium" noWrap>
-                                        {logsData.request_count}
+                                        {metricsData.request_count}
                                     </Typography>
                                 </Grid>
                             </Grid>
@@ -147,7 +167,7 @@ const Log = (props) => {
                             <Grid container item alignItems={"center"}>
                                 <Grid item xs={6}>
                                     <Typography size="xl" weight="medium" noWrap>
-                                        {logsData.request_total}
+                                        {metricsData.request_total}
                                     </Typography>
                                 </Grid>
                             </Grid>
@@ -165,7 +185,7 @@ const Log = (props) => {
                             <Grid container item alignItems={"center"}>
                                 <Grid item xs={6}>
                                     <Typography size="xl" weight="medium" noWrap>
-                                        {logsData.response_seconds}
+                                        {metricsData.response_seconds}
                                     </Typography>
                                 </Grid>
                             </Grid>
@@ -183,12 +203,22 @@ const Log = (props) => {
                             <Grid container item alignItems={"center"}>
                                 <Grid item xs={6}>
                                     <Typography size="xl" weight="medium" noWrap>
-                                        {logsData.response_total}
+                                        {metricsData.response_total}
                                     </Typography>
                                 </Grid>
                             </Grid>
                         </div>
                     </Widget>
+                </Grid>
+                <Grid item xs={12}>
+                    <MUIDataTable
+                        title="Log List"
+                        data={logsData}
+                        columns={["api_response_time", "host", "ip", "level", "message", "method", "post_body", "query_string", "request_length", "response_length", "type", "uri"]}
+                        options={{
+                            filterType: "checkbox",
+                        }}
+                    />
                 </Grid>
             </Grid>
 

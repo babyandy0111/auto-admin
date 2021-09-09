@@ -7,6 +7,7 @@ const apiUrl = {
     logsMetrics: baseUrl + version + '/logs/metrics',
     resourcesMysql: baseUrl + version + '/resources/mysql',
     resourcesSubdomain: baseUrl + version + '/resources/subdomain',
+    logs: baseUrl + version + '/logs',
 }
 
 export default apiUrl
