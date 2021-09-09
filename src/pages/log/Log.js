@@ -36,6 +36,7 @@ const Log = (props) => {
         response_seconds: 0.0,
         response_total: 0
     });
+    const logsDataFromAPI = []
     const [logsData, setLogsData] = useState([])
     const [resources, setResources] = useState(resourceData);
     const [subdomain, setSubDomainData] = useState(subdomainData);
@@ -54,27 +55,45 @@ const Log = (props) => {
     };
 
     const searchLogsHandle = (e) => {
-        API.getLogsMetrics({start_time: startStrDate, end_time: endStrDate})
-            .then(metrics => {
-                setMetricsData(metrics)
-            });
+        // API.getLogsMetrics({start_time: startStrDate, end_time: endStrDate})
+        //     .then(metrics => {
+        //         setMetricsData(metrics)
+        //     });
+        fetchLogsData('');
+    }
 
-        API.getLogs({subdomain_name: selectSubdomain, type: 'request', start_time: startStrDate, end_time: endStrDate})
+    const fetchLogsData = function (next_token) {
+        API.getLogs({
+            subdomain_name: selectSubdomain,
+            type: 'request',
+            start_time: startStrDate,
+            end_time: endStrDate,
+            next_token: next_token
+        })
             .then((Logs) => {
                 if (Logs.error === 401) {
                     signOut(userDispatch, history)
                 } else {
-                    setLogsData(Logs.logs)
+                    for (let i = 0; i < Logs.logs.length; i++) {
+                        logsDataFromAPI.push(Logs.logs[i])
+                    }
+
+                    if (Logs.next_token !== '') {
+                        fetchLogsData(Logs.next_token);
+                    } else {
+                        setLogsData(logsDataFromAPI)
+                    }
                 }
             });
     }
 
     const resourcesChangeHandle = (e) => {
-        console.log(e)
+        console.log(e);
     };
 
     const subdomainChangeHandle = (value) => {
         setSelectSubdomain(value);
+        console.log(value)
     };
 
     useEffect(() => {
@@ -85,17 +104,17 @@ const Log = (props) => {
             API.getResourcesSubdomain({page: 1, per_page: 10}),
         ]).then(([Metrics, ResourcesMysql, ResourcesSubdomain]) => {
             if (Metrics.error === 401 || ResourcesMysql.error === 401 || ResourcesSubdomain.error === 401) {
-                signOut(userDispatch, history)
+                signOut(userDispatch, history);
             } else {
                 ResourcesMysql.resources.map(arr => {
-                    resourceData.push({id: arr.id, name: arr.name})
+                    resourceData.push({id: arr.id, name: arr.name});
                 })
                 ResourcesSubdomain.resources.map(arr => {
-                    subdomainData.push({id: arr.id, name: arr.name})
+                    subdomainData.push({id: arr.id, name: arr.name});
                 })
-                setMetricsData(Metrics)
+                setMetricsData(Metrics);
                 setResources(resourceData);
-                setSubDomainData(subdomainData)
+                setSubDomainData(subdomainData);
             }
         }).catch((err) => {
             console.log(err);
@@ -104,39 +123,49 @@ const Log = (props) => {
 
     return (
         <>
-            <PageTitle title="LOG"
-                       button={<Button variant="contained" size="medium" color="secondary" onClick={searchLogsHandle}>Latest
-                           Reports</Button>}/>
+            <PageTitle title="API LOG"
+                       button={<Button variant="contained" size="medium" color="secondary"
+                                       onClick={searchLogsHandle}>ReFresh</Button>}/>
+            <Grid container spacing={3}>
+                <Grid item>
+                    <DatePicker
+                        showTimeSelect
+                        selected={startDate}
+                        onChange={startDataChangeHandle}
+                        selectsStart
+                        startDate={startDate}
+                        endDate={endDate}
+                        dateFormat="yyyy/MM/d h:mm aa"
+                    />
+                </Grid>
+                <Grid item>
+                    <DatePicker
+                        showTimeSelect
+                        selected={endDate}
+                        onChange={endDataChangeHandle}
+                        selectsEnd
+                        startDate={startDate}
+                        endDate={endDate}
+                        minDate={startDate}
+                        dateFormat="yyyy/MM/d h:mm aa"
+                    />
+                </Grid>
+                <Grid item>
+                    <Select defaultValue={resources[0].name} style={{width: 120}} onChange={resourcesChangeHandle}>
+                        {resources.map(resData => (
+                            <Option key={resData.id} value={resData.name}>{resData.name}</Option>
+                        ))}
+                    </Select>
+                </Grid>
+                <Grid item>
+                    <Select defaultValue={subdomain[0].name} style={{width: 120}} onChange={subdomainChangeHandle}>
+                        {subdomain.map(subData => (
+                            <Option key={subData.id} value={subData.name}>{subData.name}</Option>
+                        ))}
+                    </Select>
+                </Grid>
+            </Grid>
 
-            <Select defaultValue={resources[0].name} style={{width: 120}} onChange={resourcesChangeHandle}>
-                {resources.map(resData => (
-                    <Option key={resData.id} value={resData.name}>{resData.name}</Option>
-                ))}
-            </Select>
-            <Select defaultValue={subdomain[0].name} style={{width: 120}} onChange={subdomainChangeHandle}>
-                {subdomain.map(subData => (
-                    <Option key={subData.id} value={subData.name}>{subData.name}</Option>
-                ))}
-            </Select>
-            <DatePicker
-                showTimeSelect
-                selected={startDate}
-                onChange={startDataChangeHandle}
-                selectsStart
-                startDate={startDate}
-                endDate={endDate}
-                dateFormat="yyyy/MM/d h:mm aa"
-            />
-            <DatePicker
-                showTimeSelect
-                selected={endDate}
-                onChange={endDataChangeHandle}
-                selectsEnd
-                startDate={startDate}
-                endDate={endDate}
-                minDate={startDate}
-                dateFormat="yyyy/MM/d h:mm aa"
-            />
             <Grid container spacing={4}>
                 <Grid item lg={3} md={4} sm={6} xs={12}>
                     <Widget
@@ -144,6 +173,7 @@ const Log = (props) => {
                         upperTitle
                         bodyClass={classes.fullHeightBody}
                         className={classes.card}
+                        disableWidgetMenu
                     >
                         <div className={classes.visitsNumberContainer}>
                             <Grid container item alignItems={"center"}>
@@ -162,6 +192,7 @@ const Log = (props) => {
                         upperTitle
                         bodyClass={classes.fullHeightBody}
                         className={classes.card}
+                        disableWidgetMenu
                     >
                         <div className={classes.visitsNumberContainer}>
                             <Grid container item alignItems={"center"}>
@@ -180,6 +211,7 @@ const Log = (props) => {
                         upperTitle
                         bodyClass={classes.fullHeightBody}
                         className={classes.card}
+                        disableWidgetMenu
                     >
                         <div className={classes.visitsNumberContainer}>
                             <Grid container item alignItems={"center"}>
@@ -198,6 +230,7 @@ const Log = (props) => {
                         upperTitle
                         bodyClass={classes.fullHeightBody}
                         className={classes.card}
+                        disableWidgetMenu
                     >
                         <div className={classes.visitsNumberContainer}>
                             <Grid container item alignItems={"center"}>
