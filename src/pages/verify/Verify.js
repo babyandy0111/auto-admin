@@ -1,12 +1,8 @@
-import React from "react";
+import React from 'react';
+import Checkout from "./Checkout";
 
-const Verify = () => {
-
+export default function Verify() {
     return (
-        <>
-            Verify
-        </>
-    )
+        <Checkout/>
+    );
 }
-
-export default Verify

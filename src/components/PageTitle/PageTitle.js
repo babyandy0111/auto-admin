@@ -7,7 +7,7 @@ import useStyles from "./styles";
 import { Typography } from "../Wrappers";
 
 export default function PageTitle(props) {
-  var classes = useStyles();
+  const classes = useStyles();
 
   return (
     <div className={classes.pageTitleContainer}>
