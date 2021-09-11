@@ -23,9 +23,16 @@ import Maps from "../../pages/maps";
 import Tables from "../../pages/tables";
 import Icons from "../../pages/icons";
 import Charts from "../../pages/charts";
+import Erd from "../../pages/erd";
+import DataManageSource from "../../pages/datamanagesource";
+import TableManage from "../../pages/tablemanage";
+import ApiList from "../../pages/apilist";
+import Auth from "../../pages/auth";
+import Verify from "../../pages/verify";
 
 // context
 import {useLayoutState} from "../../context/LayoutContext";
+
 
 function Layout(props) {
     const classes = useStyles();
@@ -48,6 +55,13 @@ function Layout(props) {
                     <Route path="/app/dashboard/test" component={Dashboard}/>
                     <Route path="/app/dashboard/storage" component={StorageS3}/>
                     <Route path="/app/dashboard/log" component={Log}/>
+                    <Route path="/app/dashboard/erd" component={Erd}/>
+                    <Route exact path="/app/data-management"/>
+                    <Route path="/app/data-management/data-source" component={DataManageSource}/>
+                    <Route path="/app/data-management/table-management" component={TableManage}/>
+                    <Route path="/app/data-management/api-list" component={ApiList}/>
+                    <Route path="/app/data-management/auth" component={Auth}/>
+                    <Route path="/app/data-management/verify" component={Verify}/>
                     <Route path="/app/typography" component={Typography}/>
                     <Route path="/app/tables" component={Tables}/>
                     <Route path="/app/notifications" component={Notifications}/>

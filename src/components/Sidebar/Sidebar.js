@@ -9,7 +9,7 @@ import {
     QuestionAnswer as SupportIcon,
     LibraryBooks as LibraryIcon,
     HelpOutline as FAQIcon,
-    ArrowBack as ArrowBackIcon,
+    ArrowBack as ArrowBackIcon, TableChart,
 } from "@material-ui/icons";
 import {useTheme} from "@material-ui/styles";
 import {withRouter} from "react-router-dom";
@@ -36,15 +36,23 @@ const structure = [
         link: "/app/dashboard",
         icon: <HomeIcon/>,
         children: [
-            {label: "API-LOG", link: "/app/dashboard/log"},
+            {label: "API LOG", link: "/app/dashboard/log"},
             {label: "Storage", link: "/app/dashboard/storage"},
+            {label: "Erd", link: "/app/dashboard/erd"},
         ],
     },
     {
         id: 1,
-        label: "Typography",
-        link: "/app/typography",
-        icon: <TypographyIcon/>,
+        label: "Data Management",
+        link: "/app/data-management",
+        icon: <TableChart/>,
+        children: [
+            {label: "Data Source", link: "/app/data-management/data-source"},
+            {label: "Table Manage", link: "/app/data-management/table-management"},
+            {label: "API List", link: "/app/data-management/api-list"},
+            {label: "Authentication", link: "/app/data-management/auth"},
+            {label: "Verification", link: "/app/data-management/verify"},
+        ],
     },
     {
         id: 2,
@@ -130,6 +138,12 @@ const structure = [
         link: "",
         icon: <Dot size="small" color="secondary"/>,
     },
+    {
+        id: 15,
+        label: "Typography",
+        link: "/app/typography",
+        icon: <TypographyIcon/>,
+    }
 ];
 
 function Sidebar({location}) {
