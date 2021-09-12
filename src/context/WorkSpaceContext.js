@@ -1,11 +1,11 @@
-import React, {useContext, useEffect, useReducer} from "react";
+import React, {createContext, useContext, useEffect, useReducer} from "react";
 import API from "../server/api";
 import {Select} from "antd";
 import {Grid} from "@material-ui/core";
 import {useUserDispatch, signOut} from "./UserContext";
 
-const WorkSpaceStateContext = React.createContext();
-const WorkSpaceDispatchContext = React.createContext();
+const WorkSpaceStateContext = createContext();
+const WorkSpaceDispatchContext = createContext();
 const Option = Select.Option;
 
 const initialState = {
