@@ -1,10 +1,9 @@
 import React from "react";
-
-const Erd = () => {
-
+import {WorkSpaceProvider} from "../../context/WorkSpaceContext";
+const Erd = (props) => {
     return (
         <>
-            test
+            <WorkSpaceProvider props={props}/>
         </>
     )
 }
