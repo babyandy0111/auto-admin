@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import DatePicker from "react-datepicker";
 import moment from "moment"
 import API from "../../server/api";
@@ -7,18 +7,13 @@ import PageTitle from "../../components/PageTitle";
 import Widget from "../../components/Widget";
 import {Typography} from "../../components/Wrappers";
 import useStyles from "../dashboard/styles";
-import {Select} from "antd";
 import "antd/dist/antd.css";
 import "react-datepicker/dist/react-datepicker.css";
 import {useUserDispatch, signOut} from "../../context/UserContext";
 import MUIDataTable from "mui-datatables";
 import {WorkSpaceProvider} from "../../context/WorkSpaceContext";
+import {diffDays, getUTCDate} from "../../utils/formatTime";
 
-const diffDays = (days) => {
-    let result = new Date();
-    result.setDate(result.getDate() - days);
-    return result;
-}
 
 const Log = (props) => {
     const nowDate = new Date();
@@ -26,8 +21,8 @@ const Log = (props) => {
     const userDispatch = useUserDispatch();
     const [startDate, setStartDate] = useState(difDate);
     const [endDate, setEndDate] = useState(nowDate);
-    const [startStrDate, setStartStrDate] = useState(moment(new Date(difDate)).utc().format("YYYY-MM-DDThh:mm:ss[Z]"));
-    const [endStrDate, setEndStrDate] = useState(moment(new Date(nowDate)).utc().format("YYYY-MM-DDThh:mm:ss[Z]"));
+    const [startStrDate, setStartStrDate] = useState(getUTCDate(difDate));
+    const [endStrDate, setEndStrDate] = useState(getUTCDate(nowDate));
     const [metricsData, setMetricsData] = useState({
         request_count: 0,
         request_total: 0,
@@ -36,9 +31,9 @@ const Log = (props) => {
     });
     const logsDataFromAPI = []
     const [logsData, setLogsData] = useState([])
-    const [selectSubdomain, setSelectSubdomain] = useState()
     const classes = useStyles();
-    const history = props.history
+    const history = props.history;
+    const childRef = useRef();
 
     const startDataChangeHandle = (date) => {
         setStartDate(date);
@@ -51,64 +46,46 @@ const Log = (props) => {
     };
 
     const searchLogsHandle = (e) => {
-        // API.getLogsMetrics({start_time: startStrDate, end_time: endStrDate})
-        //     .then(metrics => {
-        //         setMetricsData(metrics)
-        //     });
-        fetchLogsData('');
+        API.getLogsMetrics({start_time: startStrDate, end_time: endStrDate})
+            .then(metrics => {
+                if (metrics.error === 401) {
+                    signOut(userDispatch, history);
+                } else {
+                    setMetricsData(metrics);
+                }
+            });
+        let subdomainValue = childRef.current.getSubdomainValue();
+        let resourceValue = childRef.current.getResourceValue();
+        console.log(subdomainValue, resourceValue)
+        fetchLogsData('', subdomainValue);
     }
 
-    const fetchLogsData = function (next_token) {
+    const fetchLogsData = function (next_token, domain) {
         API.getLogs({
-            subdomain_name: selectSubdomain,
+            subdomain_name: domain,
             type: 'request',
             start_time: startStrDate,
             end_time: endStrDate,
             next_token: next_token
-        })
-            .then((Logs) => {
-                if (Logs.error === 401) {
-                    signOut(userDispatch, history)
-                } else {
-                    for (let i = 0; i < Logs.logs.length; i++) {
-                        logsDataFromAPI.push(Logs.logs[i])
-                    }
-
-                    if (Logs.next_token !== '') {
-                        fetchLogsData(Logs.next_token);
-                    } else {
-                        setLogsData(logsDataFromAPI)
-                    }
+        }).then((Logs) => {
+            if (Logs.error === 401) {
+                signOut(userDispatch, history)
+            } else {
+                for (let i = 0; i < Logs.logs.length; i++) {
+                    logsDataFromAPI.push(Logs.logs[i])
                 }
-            });
+
+                if (Logs.next_token !== '') {
+                    fetchLogsData(Logs.next_token, domain);
+                } else {
+                    setLogsData(logsDataFromAPI)
+                }
+            }
+        });
     }
-
-    const resourcesChangeHandle = (e) => {
-        console.log(e);
-    };
-
-    function test(){
-        console.log("test");
-    }
-
-    const subdomainChangeHandle = (value) => {
-        setSelectSubdomain(value);
-        console.log(value)
-    };
 
     useEffect(() => {
         console.log(`useEffect只執行一次`)
-        Promise.all([
-            API.getLogsMetrics({start_time: startStrDate, end_time: endStrDate}),
-        ]).then(([Metrics]) => {
-            if (Metrics.error === 401) {
-                signOut(userDispatch, history);
-            } else {
-                setMetricsData(Metrics);
-            }
-        }).catch((err) => {
-            console.log(err);
-        });
     }, [])
 
     return (
@@ -141,7 +118,7 @@ const Log = (props) => {
                     />
                 </Grid>
                 <Grid item>
-                    <WorkSpaceProvider props />
+                    <WorkSpaceProvider props={props} cRef={childRef}/>
                 </Grid>
             </Grid>
 

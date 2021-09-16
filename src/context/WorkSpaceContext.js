@@ -1,12 +1,18 @@
-import React, {createContext, useContext, useEffect, useReducer} from "react";
+import React, {
+    createContext,
+    useContext,
+    useEffect,
+    useReducer,
+    useState,
+    useImperativeHandle
+} from "react";
 import API from "../server/api";
-import {Select} from "antd";
-import {Grid} from "@material-ui/core";
+import {Grid, Select} from "@material-ui/core";
+import MenuItem from '@material-ui/core/MenuItem';
 import {useUserDispatch, signOut} from "./UserContext";
 
 const WorkSpaceStateContext = createContext();
 const WorkSpaceDispatchContext = createContext();
-const Option = Select.Option;
 
 const initialState = {
     resource: [{id: '0', name: "請選擇"}],
@@ -25,13 +31,29 @@ function WorkSpaceReducer(state, action) {
     }
 }
 
-function WorkSpaceProvider({children, props}) {
+export const WorkSpaceProvider = ({children, props, cRef}) => {
     const [state, dispatch] = useReducer(WorkSpaceReducer, initialState);
+    const [selectSubdomain, setSelectSubdomain] = useState()
+    const [selectResource, setSelectResource] = useState()
     const userDispatch = useUserDispatch();
+
+    const resourcesChangeHandle = (e) => {
+        console.log(e.target.value)
+        setSelectResource(e.target.value)
+    }
+
+    const subdomainChangeHandle = (e) => {
+        console.log(e.target.value)
+        setSelectSubdomain(e.target.value)
+    }
+
+    useImperativeHandle(cRef, () => ({
+        getSubdomainValue: () => selectSubdomain,
+        getResourceValue: () => selectResource,
+    }));
+
     useEffect(() => {
-        if (state.resource.length <= 2) {
-            getData(state, dispatch, userDispatch, props)
-        }
+        getData(state, dispatch, userDispatch, props)
     }, [])
 
     return (
@@ -43,7 +65,7 @@ function WorkSpaceProvider({children, props}) {
                         <Select defaultValue={state.resource[0].name} style={{width: 120}}
                                 onChange={resourcesChangeHandle}>
                             {state.resource.map(resData => (
-                                <Option key={resData.id} value={resData.name}>{resData.name}</Option>
+                                <MenuItem key={resData.id} value={resData.name}>{resData.name}</MenuItem>
                             ))}
                         </Select>
                     </Grid>
@@ -51,7 +73,7 @@ function WorkSpaceProvider({children, props}) {
                         <Select defaultValue={state.subdomain[0].name} style={{width: 120}}
                                 onChange={subdomainChangeHandle}>
                             {state.subdomain.map(subData => (
-                                <Option key={subData.id} value={subData.name}>{subData.name}</Option>
+                                <MenuItem key={subData.id} value={subData.name}>{subData.name}</MenuItem>
                             ))}
                         </Select>
                     </Grid>
@@ -61,7 +83,7 @@ function WorkSpaceProvider({children, props}) {
     );
 }
 
-function useWorkSpaceState() {
+export const useWorkSpaceState = () => {
     const context = useContext(WorkSpaceStateContext);
     if (context === undefined) {
         throw new Error("useWorkSpaceState must be used within a WorkSpaceProvider");
@@ -69,7 +91,7 @@ function useWorkSpaceState() {
     return context;
 }
 
-function useWorkSpaceDispatch() {
+export const useWorkSpaceDispatch = () => {
     const context = useContext(WorkSpaceDispatchContext);
     if (context === undefined) {
         throw new Error("useWorkSpaceDispatch must be used within a WorkSpaceProvider");
@@ -77,9 +99,7 @@ function useWorkSpaceDispatch() {
     return context;
 }
 
-export {WorkSpaceProvider, useWorkSpaceState, useWorkSpaceDispatch, getData};
-
-function getData(state, dispatch, userDispatch, props) {
+const getData = (state, dispatch, userDispatch, props) => {
     API.getResourcesMysql({page: 1, per_page: 10})
         .then((res) => {
             if (res.error === 401) {
@@ -109,10 +129,4 @@ function getData(state, dispatch, userDispatch, props) {
         })
 }
 
-function resourcesChangeHandle(e) {
-    console.log(e);
-}
 
-function subdomainChangeHandle(e) {
-    console.log(e);
-}
