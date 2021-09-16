@@ -12,6 +12,7 @@ import "antd/dist/antd.css";
 import "react-datepicker/dist/react-datepicker.css";
 import {useUserDispatch, signOut} from "../../context/UserContext";
 import MUIDataTable from "mui-datatables";
+import {WorkSpaceProvider} from "../../context/WorkSpaceContext";
 
 const diffDays = (days) => {
     let result = new Date();
@@ -20,11 +21,8 @@ const diffDays = (days) => {
 }
 
 const Log = (props) => {
-    const Option = Select.Option;
     const nowDate = new Date();
     const difDate = diffDays(10);
-    const resourceData = [{id: '0', name: "請選擇"}];
-    const subdomainData = [{id: '0', name: "請選擇"}];
     const userDispatch = useUserDispatch();
     const [startDate, setStartDate] = useState(difDate);
     const [endDate, setEndDate] = useState(nowDate);
@@ -38,8 +36,6 @@ const Log = (props) => {
     });
     const logsDataFromAPI = []
     const [logsData, setLogsData] = useState([])
-    const [resources, setResources] = useState(resourceData);
-    const [subdomain, setSubDomainData] = useState(subdomainData);
     const [selectSubdomain, setSelectSubdomain] = useState()
     const classes = useStyles();
     const history = props.history
@@ -91,6 +87,10 @@ const Log = (props) => {
         console.log(e);
     };
 
+    function test(){
+        console.log("test");
+    }
+
     const subdomainChangeHandle = (value) => {
         setSelectSubdomain(value);
         console.log(value)
@@ -100,21 +100,11 @@ const Log = (props) => {
         console.log(`useEffect只執行一次`)
         Promise.all([
             API.getLogsMetrics({start_time: startStrDate, end_time: endStrDate}),
-            API.getResourcesMysql({page: 1, per_page: 10}),
-            API.getResourcesSubdomain({page: 1, per_page: 10}),
-        ]).then(([Metrics, ResourcesMysql, ResourcesSubdomain]) => {
-            if (Metrics.error === 401 || ResourcesMysql.error === 401 || ResourcesSubdomain.error === 401) {
+        ]).then(([Metrics]) => {
+            if (Metrics.error === 401) {
                 signOut(userDispatch, history);
             } else {
-                ResourcesMysql.resources.map(arr => {
-                    resourceData.push({id: arr.id, name: arr.name});
-                })
-                ResourcesSubdomain.resources.map(arr => {
-                    subdomainData.push({id: arr.id, name: arr.name});
-                })
                 setMetricsData(Metrics);
-                setResources(resourceData);
-                setSubDomainData(subdomainData);
             }
         }).catch((err) => {
             console.log(err);
@@ -151,18 +141,7 @@ const Log = (props) => {
                     />
                 </Grid>
                 <Grid item>
-                    <Select defaultValue={resources[0].name} style={{width: 120}} onChange={resourcesChangeHandle}>
-                        {resources.map(resData => (
-                            <Option key={resData.id} value={resData.name}>{resData.name}</Option>
-                        ))}
-                    </Select>
-                </Grid>
-                <Grid item>
-                    <Select defaultValue={subdomain[0].name} style={{width: 120}} onChange={subdomainChangeHandle}>
-                        {subdomain.map(subData => (
-                            <Option key={subData.id} value={subData.name}>{subData.name}</Option>
-                        ))}
-                    </Select>
+                    <WorkSpaceProvider props />
                 </Grid>
             </Grid>
 

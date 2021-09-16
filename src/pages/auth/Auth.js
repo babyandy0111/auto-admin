@@ -1,44 +1,73 @@
 import React from "react";
-import {TextField, Button, Select, MenuItem} from "@material-ui/core";
-import PageTitle from "../../components/PageTitle";
+import Form from "@rjsf/core";
 
 const Auth = () => {
-    const CreateAuthHandle = (e) => {
-        console.log(e)
-    }
+    const schema = {
+        "title": "A registration form",
+        "description": "A simple form example.",
+        "type": "object",
+        "required": [
+            "firstName",
+            "lastName"
+        ],
+        "properties": {
+            "firstName": {
+                "type": "string",
+                "title": "First name",
+                "default": "Chuck"
+            },
+            "lastName": {
+                "type": "string",
+                "title": "Last name"
+            },
+            "telephone": {
+                "type": "string",
+                "title": "Telephone",
+                "minLength": 10
+            }
+        }
+    };
+
+    const uiSchema = {
+        "firstName": {
+            "ui:autofocus": true,
+            "ui:emptyValue": "",
+            "ui:autocomplete": "family-name"
+        },
+        "lastName": {
+            "ui:emptyValue": "",
+            "ui:autocomplete": "given-name"
+        },
+        "age": {
+            "ui:widget": "updown",
+            "ui:title": "Age of person",
+            "ui:description": "(earthian year)"
+        },
+        "bio": {
+            "ui:widget": "textarea"
+        },
+        "password": {
+            "ui:widget": "password",
+            "ui:help": "Hint: Make it strong!"
+        },
+        "date": {
+            "ui:widget": "alt-datetime"
+        },
+        "telephone": {
+            "ui:options": {
+                "inputType": "tel"
+            }
+        }
+    };
+
+    const log = (type) => console.log.bind(console, type);
 
     return (
-        <>
-            <PageTitle title="Auth" button={<Button variant="contained" size="medium" color="secondary"
-                                                    onClick={CreateAuthHandle}>Create</Button>}/>
-
-            <TextField
-                required
-                id="filled-required"
-                label="Required"
-                defaultValue="Hello World"
-                variant="filled"
-            />
-
-            <Select
-                labelId="demo-controlled-open-select-label"
-                id="demo-controlled-open-select"
-                // open={open}
-                // onClose={handleClose}
-                // onOpen={handleOpen}
-                // value={age}
-                // onChange={handleChange}
-            >
-                <MenuItem value="">
-                    <em>None</em>
-                </MenuItem>
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
-
-        </>
-    )
+        <Form schema={schema} uiSchema={uiSchema}
+              onChange={log("changed")}
+              onSubmit={log("submitted")}
+              onError={log("errors")}/>
+    );
 }
 
 export default Auth

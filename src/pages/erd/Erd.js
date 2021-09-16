@@ -3,7 +3,7 @@ import {WorkSpaceProvider} from "../../context/WorkSpaceContext";
 const Erd = (props) => {
     return (
         <>
-            <WorkSpaceProvider props={props}/>
+            <WorkSpaceProvider props={props} />
         </>
     )
 }
