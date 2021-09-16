@@ -7,13 +7,11 @@ import PageTitle from "../../components/PageTitle";
 import Widget from "../../components/Widget";
 import {Typography} from "../../components/Wrappers";
 import useStyles from "../dashboard/styles";
-import "antd/dist/antd.css";
 import "react-datepicker/dist/react-datepicker.css";
 import {useUserDispatch, signOut} from "../../context/UserContext";
 import MUIDataTable from "mui-datatables";
 import {WorkSpaceProvider} from "../../context/WorkSpaceContext";
 import {diffDays, getUTCDate} from "../../utils/formatTime";
-
 
 const Log = (props) => {
     const nowDate = new Date();
@@ -93,6 +91,7 @@ const Log = (props) => {
             <PageTitle title="API LOG"
                        button={<Button variant="contained" size="medium" color="secondary"
                                        onClick={searchLogsHandle}>ReFresh</Button>}/>
+
             <Grid container spacing={3}>
                 <Grid item>
                     <DatePicker
