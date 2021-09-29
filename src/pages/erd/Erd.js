@@ -1,9 +1,18 @@
 import React from "react";
-import {WorkSpaceProvider} from "../../context/WorkSpaceContext";
+import 'grapesjs/dist/css/grapes.min.css';
+import {GrapesjsReact} from "grapesjs-react";
+import 'grapesjs-custom-code'
+
 const Erd = (props) => {
     return (
         <>
-            <WorkSpaceProvider props={props} />
+            <GrapesjsReact
+                id='grapesjs-react'
+                plugins={[
+                    'grapesjs-custom-code',
+                    'gjs-preset-webpage',
+                ]}
+            />
         </>
     )
 }

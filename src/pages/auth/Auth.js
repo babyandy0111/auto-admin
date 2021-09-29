@@ -2,7 +2,6 @@ import React from "react";
 import {makeStyles} from '@material-ui/core/styles';
 import Form from "@rjsf/material-ui";
 import Chip from '@material-ui/core/Chip';
-import Draggable from 'react-draggable'; // The default
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -24,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 const Auth = () => {
-
+    const rowStyle = { overflow: 'hidden', clear: 'both' };
     const classes = useStyles();
     const schema = {
         "title": "A registration form",
@@ -98,21 +97,9 @@ const Auth = () => {
                   onChange={log("changed")}
                   onSubmit={log("submitted")}
                   onError={log("errors")}/>
-            <Draggable
-                axis="x"
-                handle=".handle"
-                defaultPosition={{x: 0, y: 0}}
-                position={null}
-                grid={[25, 25]}
-                scale={1}
-                onStart={log("onStart")}
-                onDrag={log("onDrag")}
-                onStop={log("onStop")}>
-                <div>
-                    <div className="handle">Drag from here</div>
-                    <div>This readme is really dragging on...</div>
-                </div>
-            </Draggable>
+
+
+
         </>
     );
 }
