@@ -8,6 +8,7 @@ const apiUrl = {
     resourcesMysql: baseUrl + version + '/resources/mysql',
     resourcesSubdomain: baseUrl + version + '/resources/subdomain',
     logs: baseUrl + version + '/logs',
+    storages: baseUrl + version + '/storage/list-files',
 }
 
 export default apiUrl

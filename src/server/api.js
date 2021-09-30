@@ -19,7 +19,10 @@ const API = {
     },
     getLogs(params) {
         return apiGet(apiUrl.logs, params)
-    }
+    },
+    getStorage(params) {
+        return apiGet(apiUrl.storages, params)
+    },
 }
 
 export default API
