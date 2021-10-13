@@ -6,10 +6,9 @@ import {
     FormatSize as TypographyIcon,
     FilterNone as UIElementsIcon,
     BorderAll as TableIcon,
-    QuestionAnswer as SupportIcon,
-    LibraryBooks as LibraryIcon,
-    HelpOutline as FAQIcon,
+    ShoppingCart as ShoppingCartIcon,
     ArrowBack as ArrowBackIcon, TableChart,
+    Domain as DomainIcon, FileCopy as FileCopyIcon
 } from "@material-ui/icons";
 import {useTheme} from "@material-ui/styles";
 import {withRouter} from "react-router-dom";
@@ -43,31 +42,60 @@ const structure = [
     },
     {
         id: 1,
-        label: "Data Management",
+        label: "API Management",
         link: "/app/data-management",
         icon: <TableChart/>,
         children: [
-            {label: "Data Source", link: "/app/data-management/data-source"},
-            {label: "Table Manage", link: "/app/data-management/table-management"},
-            {label: "API List", link: "/app/data-management/api-list"},
-            {label: "Authentication", link: "/app/data-management/auth"},
-            {label: "Verification", link: "/app/data-management/verify"},
+            {label: "Data Source", link: "/app/api-management/data-source"},
+            {label: "Table Manage", link: "/app/api-management/table-management"},
+            {label: "API List", link: "/app/api-management/api-list"},
+            {label: "Authentication", link: "/app/api-management/auth"},
+            {label: "Verification", link: "/app/api-management/verify"},
         ],
     },
     {
         id: 2,
+        label: "Domain Management",
+        link: "/app/domain-management",
+        icon: <DomainIcon/>,
+        children: [
+            {label: "Create Domain", link: "/app/domain-management/create"}
+        ]
+    },
+    {
+        id: 3,
+        label: "Data Management",
+        link: "/app/data-management",
+        icon: <FileCopyIcon/>,
+        children: [
+            {label: "Table List", link: "/app/data-management/table-list"},
+            {label: "Data Module", link: "/app/data-management/module-list"}
+        ]
+    },
+    {
+        id: 4,
+        label: "Marketplace",
+        link: "/app/marketplace",
+        icon: <ShoppingCartIcon/>,
+        children: [
+            {label: "Use Module", link: "/app/marketplace/use-list"},
+            {label: "Module List", link: "/app/marketplace/module-list"}
+        ]
+    },
+    {
+        id: 20,
         label: "Tables",
         link: "/app/tables",
         icon: <TableIcon/>
     },
     {
-        id: 3,
+        id: 30,
         label: "Notifications",
         link: "/app/notifications",
         icon: <NotificationsIcon/>,
     },
     {
-        id: 4,
+        id: 40,
         label: "UI Elements",
         link: "/app/ui",
         icon: <UIElementsIcon/>,
@@ -87,57 +115,14 @@ const structure = [
         ],
     },
     {
-        id: 5,
+        id: 50,
         type: "divider"
     },
-    {
-        id: 6,
-        type: "title",
-        label: "HELP"
-    },
-    {
-        id: 7,
-        label: "Library",
-        link: "https://flatlogic.com/templates",
-        icon: <LibraryIcon/>
-    },
-    {
-        id: 8, label: "Support",
-        link: "https://flatlogic.com/forum",
-        icon: <SupportIcon/>
-    },
-    {
-        id: 9, label: "FAQ",
-        link: "https://flatlogic.com/forum",
-        icon: <FAQIcon/>
-    },
-    {
-        id: 10,
-        type: "divider"
-    },
-    {
-        id: 11,
-        type: "title",
-        label: "PROJECTS"
-    },
-    {
-        id: 12,
-        label: "My recent",
-        link: "",
-        icon: <Dot size="small" color="warning"/>,
-    },
-    {
-        id: 13,
-        label: "Starred",
-        link: "",
-        icon: <Dot size="small" color="primary"/>,
-    },
-    {
-        id: 14,
-        label: "Background",
-        link: "",
-        icon: <Dot size="small" color="secondary"/>,
-    },
+    // {
+    //     id: 6,
+    //     type: "title",
+    //     label: "HELP"
+    // },
     {
         id: 15,
         label: "Typography",

@@ -1,0 +1,6 @@
+{
+  "name": "DataModule",
+  "version": "0.0.0",
+  "main": "DataModule.js",
+  "private": true
+}
