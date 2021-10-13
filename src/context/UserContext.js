@@ -48,7 +48,7 @@ function useUserDispatch() {
     return context;
 }
 
-export {UserProvider, useUserState, useUserDispatch, loginUser, signOut};
+export {UserProvider, useUserState, useUserDispatch, loginUser, signOut, createUser};
 
 function loginUser(dispatch, companyName, email, password, history, setIsLoading, setError) {
     setError(false);
@@ -67,6 +67,22 @@ function loginUser(dispatch, companyName, email, password, history, setIsLoading
                 dispatch({type: "LOGIN_FAILURE"});
                 setError(true);
                 setIsLoading(false);
+            }
+        }).catch((e) => {
+            console.log(e);
+        })
+    }
+}
+
+function createUser(dispatch, companyName, email, password, history, setIsLoading, setError) {
+    setError(false);
+    setIsLoading(true);
+
+    if (!!companyName && !!email && !!password) {
+        const params = {'name': companyName, 'account': email, 'password': password}
+        API.postAccount(params).then(res => {
+            if(res.id != null){
+                loginUser(dispatch, companyName, email, password, history, setIsLoading, setError);
             }
         }).catch((e) => {
             console.log(e);

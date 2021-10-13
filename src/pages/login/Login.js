@@ -18,7 +18,7 @@ import useStyles from "./styles";
 import logo from "./logo.svg";
 
 // context
-import {useUserDispatch, loginUser} from "../../context/UserContext";
+import {useUserDispatch, loginUser, createUser} from "../../context/UserContext";
 
 function Login(props) {
     const classes = useStyles();
@@ -202,7 +202,7 @@ function Login(props) {
                                 ) : (
                                     <Button
                                         onClick={() =>
-                                            loginUser(
+                                            createUser(
                                                 userDispatch,
                                                 companyNameValue,
                                                 emailValue,
