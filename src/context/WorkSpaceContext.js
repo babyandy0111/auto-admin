@@ -100,7 +100,7 @@ export const useWorkSpaceDispatch = () => {
 const getData = (state, dispatch) => {
     API.getResourcesMysql({page: 1, per_page: 10})
         .then((res) => {
-            res.data.resources.map(arr => {
+            res.resources.map(arr => {
                 state.resource.push({id: arr.id, name: arr.name});
             })
             dispatch({type: "GET_RESOURCE_DATA", data: state.resource});
@@ -108,7 +108,7 @@ const getData = (state, dispatch) => {
 
     API.getResourcesSubdomain({page: 1, per_page: 10})
         .then((res) => {
-            res.data.resources.map(arr => {
+            res.resources.map(arr => {
                 state.subdomain.push({id: arr.id, name: arr.name});
             })
             dispatch({type: "GET_SUBDOMAIN_DATA", data: state.subdomain})

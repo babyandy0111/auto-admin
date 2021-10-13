@@ -8,7 +8,6 @@ import Widget from "../../components/Widget";
 import {Typography} from "../../components/Wrappers";
 import useStyles from "../dashboard/styles";
 import "react-datepicker/dist/react-datepicker.css";
-import {useUserDispatch, signOut} from "../../context/UserContext";
 import MUIDataTable from "mui-datatables";
 import {WorkSpaceProvider} from "../../context/WorkSpaceContext";
 import {diffDays, getUTCDate} from "../../utils/formatTime";
@@ -16,7 +15,6 @@ import {diffDays, getUTCDate} from "../../utils/formatTime";
 const Log = (props) => {
     const nowDate = new Date();
     const difDate = diffDays(10);
-    const userDispatch = useUserDispatch();
     const [startDate, setStartDate] = useState(difDate);
     const [endDate, setEndDate] = useState(nowDate);
     const [startStrDate, setStartStrDate] = useState(getUTCDate(difDate));
@@ -30,7 +28,6 @@ const Log = (props) => {
     const logsDataFromAPI = []
     const [logsData, setLogsData] = useState([])
     const classes = useStyles();
-    const history = props.history;
     const childRef = useRef();
 
     const startDataChangeHandle = (date) => {

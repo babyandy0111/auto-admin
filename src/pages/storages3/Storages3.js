@@ -3,19 +3,13 @@ import PageTitle from "../../components/PageTitle";
 import {Button, Grid} from "@material-ui/core";
 import MUIDataTable from "mui-datatables";
 import API from "../../server/api";
-import {signOut} from "../../context/UserContext";
 
 const StorageS3 = (props) => {
     const [storageData, setStorageData] = useState([])
     const getStorageListHandle = () => {
         API.getStorage({path: '/'})
-            .then(storageList => {
-                if (storageList.error === 401) {
-                    // signOut(userDispatch, history);
-                } else {
-                    setStorageData(storageList.files);
-                    console.log(storageList)
-                }
+            .then(res => {
+                setStorageData(res.data.files);
             });
     }
 

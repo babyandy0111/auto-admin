@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 const Auth = () => {
-    const rowStyle = { overflow: 'hidden', clear: 'both' };
+    // const rowStyle = { overflow: 'hidden', clear: 'both' };
     const classes = useStyles();
     const schema = {
         "title": "A registration form",
