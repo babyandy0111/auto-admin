@@ -9,7 +9,6 @@ import React, {
 import API from "../server/api";
 import {Grid, Select} from "@material-ui/core";
 import MenuItem from '@material-ui/core/MenuItem';
-import {useUserDispatch, signOut} from "./UserContext";
 
 const WorkSpaceStateContext = createContext();
 const WorkSpaceDispatchContext = createContext();
@@ -35,7 +34,6 @@ export const WorkSpaceProvider = ({children, props, cRef}) => {
     const [state, dispatch] = useReducer(WorkSpaceReducer, initialState);
     const [selectSubdomain, setSelectSubdomain] = useState()
     const [selectResource, setSelectResource] = useState()
-    const userDispatch = useUserDispatch();
 
     const resourcesChangeHandle = (e) => {
         console.log(e.target.value)
@@ -53,7 +51,7 @@ export const WorkSpaceProvider = ({children, props, cRef}) => {
     }));
 
     useEffect(() => {
-        getData(state, dispatch, userDispatch, props)
+        getData(state, dispatch)
     }, [])
 
     return (
@@ -99,33 +97,21 @@ export const useWorkSpaceDispatch = () => {
     return context;
 }
 
-const getData = (state, dispatch, userDispatch, props) => {
+const getData = (state, dispatch) => {
     API.getResourcesMysql({page: 1, per_page: 10})
         .then((res) => {
-            if (res.error === 401) {
-                // console.log(props)
-                signOut(userDispatch, props.history);
-            } else {
-                // let data = state.resource
-                res.resources.map(arr => {
-                    state.resource.push({id: arr.id, name: arr.name});
-                })
-                dispatch({type: "GET_RESOURCE_DATA", data: state.resource})
-            }
+            res.data.resources.map(arr => {
+                state.resource.push({id: arr.id, name: arr.name});
+            })
+            dispatch({type: "GET_RESOURCE_DATA", data: state.resource});
         })
 
     API.getResourcesSubdomain({page: 1, per_page: 10})
         .then((res) => {
-            if (res.error === 401) {
-                // console.log(props)
-                signOut(userDispatch, props.history);
-            } else {
-                // let data = state.resource
-                res.resources.map(arr => {
-                    state.subdomain.push({id: arr.id, name: arr.name});
-                })
-                dispatch({type: "GET_SUBDOMAIN_DATA", data: state.subdomain})
-            }
+            res.data.resources.map(arr => {
+                state.subdomain.push({id: arr.id, name: arr.name});
+            })
+            dispatch({type: "GET_SUBDOMAIN_DATA", data: state.subdomain})
         })
 }
 

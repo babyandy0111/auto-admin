@@ -45,16 +45,12 @@ const Log = (props) => {
 
     const searchLogsHandle = (e) => {
         API.getLogsMetrics({start_time: startStrDate, end_time: endStrDate})
-            .then(metrics => {
-                if (metrics.error === 401) {
-                    signOut(userDispatch, history);
-                } else {
-                    setMetricsData(metrics);
-                }
+            .then(res => {
+                setMetricsData(res.data);
             });
         let subdomainValue = childRef.current.getSubdomainValue();
-        let resourceValue = childRef.current.getResourceValue();
-        console.log(subdomainValue, resourceValue)
+        // let resourceValue = childRef.current.getResourceValue();
+        // console.log(subdomainValue, resourceValue)
         fetchLogsData('', subdomainValue);
     }
 
@@ -65,19 +61,15 @@ const Log = (props) => {
             start_time: startStrDate,
             end_time: endStrDate,
             next_token: next_token
-        }).then((Logs) => {
-            if (Logs.error === 401) {
-                signOut(userDispatch, history)
-            } else {
-                for (let i = 0; i < Logs.logs.length; i++) {
-                    logsDataFromAPI.push(Logs.logs[i])
-                }
+        }).then((res) => {
+            for (let i = 0; i < res.data.logs.length; i++) {
+                logsDataFromAPI.push(res.data.logs[i]);
+            }
 
-                if (Logs.next_token !== '') {
-                    fetchLogsData(Logs.next_token, domain);
-                } else {
-                    setLogsData(logsDataFromAPI)
-                }
+            if (res.data.next_token !== '') {
+                fetchLogsData(res.data.next_token, domain);
+            } else {
+                setLogsData(logsDataFromAPI)
             }
         });
     }

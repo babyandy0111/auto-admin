@@ -1,5 +1,5 @@
-import {apiGet, apiPost} from './http'
-import apiUrl from './base'
+import {apiGet, apiPost} from './http';
+import {apiUrl} from './base';
 
 const API = {
     postLogin(params) {

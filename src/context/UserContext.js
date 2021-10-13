@@ -56,9 +56,9 @@ function loginUser(dispatch, companyName, email, password, history, setIsLoading
 
     if (!!companyName && !!email && !!password) {
         const params = {'name': companyName, 'account': email, 'password': password}
-        API.postLogin(params).then(data => {
-            if (data.error == null) {
-                localStorage.setItem('id_token', data.token)
+        API.postLogin(params).then(res => {
+            if (res.data.token != null) {
+                localStorage.setItem('id_token', res.data.token)
                 setError(null)
                 setIsLoading(false)
                 dispatch({type: 'LOGIN_SUCCESS'})
@@ -68,6 +68,8 @@ function loginUser(dispatch, companyName, email, password, history, setIsLoading
                 setError(true);
                 setIsLoading(false);
             }
+        }).catch((e) => {
+            console.log(e);
         })
     }
 }
