@@ -57,8 +57,8 @@ function loginUser(dispatch, companyName, email, password, history, setIsLoading
     if (!!companyName && !!email && !!password) {
         const params = {'name': companyName, 'account': email, 'password': password}
         API.postLogin(params).then(res => {
-            if (res.data.token != null) {
-                localStorage.setItem('id_token', res.data.token)
+            if (res.token != null) {
+                localStorage.setItem('id_token', res.token)
                 setError(null)
                 setIsLoading(false)
                 dispatch({type: 'LOGIN_SUCCESS'})
