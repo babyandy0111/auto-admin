@@ -1,29 +1,28 @@
-import React from "react"
 import {
   AppBar,
-  Toolbar,
+  Fab,
   IconButton,
   InputBase,
   Menu,
   MenuItem,
-  Fab,
+  Toolbar,
   withStyles,
 } from "@material-ui/core"
+import { alpha } from "@material-ui/core/styles"
 import {
-  Menu as MenuIcon,
+  ArrowBack as ArrowBackIcon,
   MailOutline as MailIcon,
+  Menu as MenuIcon,
   NotificationsNone as NotificationsIcon,
   Person as AccountIcon,
   Search as SearchIcon,
   Send as SendIcon,
-  ArrowBack as ArrowBackIcon,
 } from "@material-ui/icons"
-import { fade } from "@material-ui/core/styles/colorManipulator"
 import classNames from "classnames"
-
-import { Badge, Typography } from "../Wrappers"
+import React from "react"
 import Notification from "../Notification"
 import UserAvatar from "../UserAvatar"
+import { Badge, Typography } from "../Wrappers"
 
 const messages = [
   {
@@ -333,15 +332,15 @@ const styles = (theme) => ({
     borderRadius: 25,
     paddingLeft: theme.spacing.unit * 2.5,
     width: 36,
-    backgroundColor: fade(theme.palette.common.black, 0),
+    backgroundColor: alpha(theme.palette.common.black, 0),
     transition: theme.transitions.create(["background-color", "width"]),
     "&:hover": {
       cursor: "pointer",
-      backgroundColor: fade(theme.palette.common.black, 0.08),
+      backgroundColor: alpha(theme.palette.common.black, 0.08),
     },
   },
   searchFocused: {
-    backgroundColor: fade(theme.palette.common.black, 0.08),
+    backgroundColor: alpha(theme.palette.common.black, 0.08),
     width: "100%",
     [theme.breakpoints.up("md")]: {
       width: 250,

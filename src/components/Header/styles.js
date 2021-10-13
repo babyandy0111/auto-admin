@@ -1,7 +1,7 @@
-import { makeStyles } from "@material-ui/styles";
-import { fade } from "@material-ui/core/styles/colorManipulator";
+import { makeStyles } from "@material-ui/styles"
+import { alpha } from "@material-ui/core/styles"
 
-export default makeStyles(theme => ({
+export default makeStyles((theme) => ({
   logotype: {
     color: "white",
     marginLeft: theme.spacing(2.5),
@@ -36,15 +36,15 @@ export default makeStyles(theme => ({
     borderRadius: 25,
     paddingLeft: theme.spacing(2.5),
     width: 36,
-    backgroundColor: fade(theme.palette.common.black, 0),
+    backgroundColor: alpha(theme.palette.common.black, 0),
     transition: theme.transitions.create(["background-color", "width"]),
     "&:hover": {
       cursor: "pointer",
-      backgroundColor: fade(theme.palette.common.black, 0.08),
+      backgroundColor: alpha(theme.palette.common.black, 0.08),
     },
   },
   searchFocused: {
-    backgroundColor: fade(theme.palette.common.black, 0.08),
+    backgroundColor: alpha(theme.palette.common.black, 0.08),
     width: "100%",
     [theme.breakpoints.up("md")]: {
       width: 250,
@@ -100,7 +100,7 @@ export default makeStyles(theme => ({
   headerMenuButtonSandwich: {
     marginLeft: 9,
     [theme.breakpoints.down("sm")]: {
-      marginLeft: 0
+      marginLeft: 0,
     },
     padding: theme.spacing(0.5),
   },
@@ -128,9 +128,9 @@ export default makeStyles(theme => ({
   profileMenuIcon: {
     marginRight: theme.spacing(2),
     color: theme.palette.text.hint,
-    '&:hover': {
+    "&:hover": {
       color: theme.palette.primary.main,
-    }
+    },
   },
   profileMenuLink: {
     fontSize: 16,
@@ -167,9 +167,9 @@ export default makeStyles(theme => ({
     marginLeft: theme.spacing(2),
   },
   purchaseBtn: {
-    [theme.breakpoints.down('sm')]: {
-      display: 'none'
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
     },
-    marginRight: theme.spacing(3)
-  }
-}));
+    marginRight: theme.spacing(3),
+  },
+}))

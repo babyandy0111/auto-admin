@@ -8,8 +8,8 @@ import Widget from "../../components/Widget"
 import { Typography } from "../../components/Wrappers"
 import useStyles from "../dashboard/styles"
 import "react-datepicker/dist/react-datepicker.css"
-import MUIDataTable from "mui-datatables"
-import { WorkSpaceProvider } from "../../context/WorkSpaceContext"
+// import MUIDataTable from "mui-datatables"
+import { WorkSpaceProvider } from "../../contexts/WorkSpaceContext"
 import { diffDays, getUTCDate } from "../../utils/formatTime"
 
 const Log = (props) => {
@@ -201,7 +201,7 @@ const Log = (props) => {
           </Widget>
         </Grid>
         <Grid item xs={12}>
-          <MUIDataTable
+          {/* <MUIDataTable
             title="Log List"
             data={logsData}
             columns={[
@@ -221,7 +221,7 @@ const Log = (props) => {
             options={{
               filterType: "checkbox",
             }}
-          />
+          /> */}
         </Grid>
       </Grid>
     </>
