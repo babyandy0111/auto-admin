@@ -1,37 +1,45 @@
-import React from "react";
-import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
+import React from "react"
+import { HashRouter, Route, Switch, Redirect } from "react-router-dom"
 
 // components
-import Layout from "./Layout";
+import Layout from "./Layout"
 
 // pages
-import Error from "../pages/error";
-import Login from "../pages/login";
+import Error from "../pages/error"
+import Login from "../pages/login"
 
 // context
-import { useUserState } from "../context/UserContext";
+import { useUserState } from "../context/UserContext"
 
 export default function App() {
   // global
-  const { isAuthenticated } = useUserState();
+  const { isAuthenticated } = useUserState()
 
   return (
     <HashRouter>
       <Switch>
-        <Route exact path="/" render={() => <Redirect to="/app/dashboard/test" />} />
-        <Route exact path="/app" render={() => <Redirect to="/app/dashboard" />}/>
+        <Route
+          exact
+          path="/"
+          render={() => <Redirect to="/app/dashboard/test" />}
+        />
+        <Route
+          exact
+          path="/app"
+          render={() => <Redirect to="/app/dashboard" />}
+        />
         <PrivateRoute path="/app" component={Layout} />
         <PublicRoute path="/login" component={Login} />
         <Route component={Error} />
       </Switch>
     </HashRouter>
-  );
+  )
 
   function PrivateRoute({ component, ...rest }) {
     return (
       <Route
         {...rest}
-        render={props =>
+        render={(props) =>
           isAuthenticated ? (
             React.createElement(component, props)
           ) : (
@@ -46,14 +54,14 @@ export default function App() {
           )
         }
       />
-    );
+    )
   }
 
   function PublicRoute({ component, ...rest }) {
     return (
       <Route
         {...rest}
-        render={props =>
+        render={(props) =>
           isAuthenticated ? (
             <Redirect
               to={{
@@ -65,6 +73,6 @@ export default function App() {
           )
         }
       />
-    );
+    )
   }
 }
