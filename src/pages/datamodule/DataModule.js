@@ -1,9 +1,9 @@
 import React from "react";
 // styles
-import useStyles from "./styles";
+// import useStyles from "./styles";
 
 export default function DataModule() {
-  const classes = useStyles();
+  // const classes = useStyles();
 
   return (
     <>

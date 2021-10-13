@@ -22,8 +22,8 @@ var useStyles = makeStyles(theme => ({
 }));
 
 export default function Dot({ size, color }) {
-  var classes = useStyles();
-  var theme = useTheme();
+  let classes = useStyles();
+  let theme = useTheme();
 
   return (
     <div
