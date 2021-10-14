@@ -1,5 +1,5 @@
 import React from "react"
-import { Button } from "@material-ui/core"
+import { Button, Typography } from "@mui/material"
 import {
   NotificationsNone as NotificationsIcon,
   ThumbUp as ThumbUpIcon,
@@ -21,9 +21,6 @@ import tinycolor from "tinycolor2"
 
 // styles
 import useStyles from "./styles"
-
-// components
-import { Typography } from "../Wrappers"
 
 const typesIcons = {
   "e-commerce": <ShoppingCartIcon />,

@@ -1,7 +1,7 @@
 import React from "react"
 import { makeStyles } from "@material-ui/styles"
 import Form from "@rjsf/material-ui"
-import Chip from "@material-ui/core/Chip"
+import Chip from "@mui/material/Chip"
 
 const useStyles = makeStyles((theme) => ({
   root: {

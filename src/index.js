@@ -1,4 +1,4 @@
-import { CssBaseline } from "@material-ui/core"
+import { CssBaseline } from "@mui/material"
 import { ThemeProvider } from "@material-ui/styles"
 import React from "react"
 import ReactDOM from "react-dom"

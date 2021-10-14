@@ -7,8 +7,8 @@ import React, {
   useImperativeHandle,
 } from "react"
 import API from "../server/api"
-import { Grid, Select } from "@material-ui/core"
-import MenuItem from "@material-ui/core/MenuItem"
+import { Grid, Select } from "@mui/material"
+import MenuItem from "@mui/material/MenuItem"
 
 const WorkSpaceStateContext = createContext()
 const WorkSpaceDispatchContext = createContext()

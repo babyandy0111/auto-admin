@@ -1,7 +1,7 @@
 import React from "react"
-import { Grid } from "@material-ui/core"
+import { Grid } from "@mui/material"
 import { makeStyles } from "@material-ui/styles"
-// import MUIDataTable from "mui-datatables"
+import MUIDataTable from "mui-datatables"
 
 // components
 import PageTitle from "../../components/PageTitle"
@@ -44,14 +44,14 @@ export default function Tables() {
       <PageTitle title="Tables" />
       <Grid container spacing={4}>
         <Grid item xs={12}>
-          {/* <MUIDataTable
+          <MUIDataTable
             title="Employee List"
             data={datatableData}
             columns={["Name", "Company", "City", "State"]}
             options={{
               filterType: "checkbox",
             }}
-          /> */}
+          />
         </Grid>
         <Grid item xs={12}>
           <Widget

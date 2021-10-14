@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import PageTitle from "../../components/PageTitle"
-import { Button, Grid } from "@material-ui/core"
-// import MUIDataTable from "mui-datatables"
+import { Button, Grid } from "@mui/material"
+import MUIDataTable from "mui-datatables"
 import API from "../../server/api"
 
 const StorageS3 = (props) => {
@@ -29,14 +29,14 @@ const StorageS3 = (props) => {
       />
       <Grid container spacing={4}>
         <Grid item xs={12}>
-          {/* <MUIDataTable
+          <MUIDataTable
             title="Log List"
             data={storageData}
             columns={["full_name", "name", "size", "type", "last_updated_at"]}
             options={{
               filterType: "checkbox",
             }}
-          /> */}
+          />
         </Grid>
       </Grid>
     </>

@@ -1,20 +1,17 @@
-import React, { useState } from "react"
-import { Grid } from "@material-ui/core"
 import { Close as CloseIcon } from "@mui/icons-material"
-import { ToastContainer, toast } from "react-toastify"
+import { Button, Grid, Typography } from "@mui/material"
+import classnames from "classnames"
+import React, { useState } from "react"
 import SyntaxHighlighter from "react-syntax-highlighter"
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs"
-import classnames from "classnames"
-
+import { toast, ToastContainer } from "react-toastify"
 // styles
 import "react-toastify/dist/ReactToastify.css"
-import useStyles from "./styles"
-
+import Notification from "../../components/Notification"
+import PageTitle from "../../components/PageTitle/PageTitle"
 // components
 import Widget from "../../components/Widget/Widget"
-import PageTitle from "../../components/PageTitle/PageTitle"
-import Notification from "../../components/Notification"
-import { Typography, Button } from "../../components/Wrappers/Wrappers"
+import useStyles from "./styles"
 
 const positions = [
   toast.POSITION.TOP_LEFT,

@@ -2,13 +2,13 @@ import React, { useState, useEffect, useRef } from "react"
 import DatePicker from "react-datepicker"
 import moment from "moment"
 import API from "../../server/api"
-import { Button, Grid } from "@material-ui/core"
+import { Button, Grid } from "@mui/material"
 import PageTitle from "../../components/PageTitle"
 import Widget from "../../components/Widget"
-import { Typography } from "../../components/Wrappers"
+import { Typography } from "@mui/material"
 import useStyles from "../dashboard/styles"
 import "react-datepicker/dist/react-datepicker.css"
-// import MUIDataTable from "mui-datatables"
+import MUIDataTable from "mui-datatables"
 import { WorkSpaceProvider } from "../../contexts/WorkSpaceContext"
 import { diffDays, getUTCDate } from "../../utils/formatTime"
 
@@ -201,7 +201,7 @@ const Log = (props) => {
           </Widget>
         </Grid>
         <Grid item xs={12}>
-          {/* <MUIDataTable
+          <MUIDataTable
             title="Log List"
             data={logsData}
             columns={[
@@ -221,7 +221,7 @@ const Log = (props) => {
             options={{
               filterType: "checkbox",
             }}
-          /> */}
+          />
         </Grid>
       </Grid>
     </>

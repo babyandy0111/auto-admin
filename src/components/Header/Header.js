@@ -1,4 +1,11 @@
-import { AppBar, IconButton, Menu, MenuItem, Toolbar } from "@material-ui/core"
+import {
+  AppBar,
+  IconButton,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Typography,
+} from "@mui/material"
 import {
   ArrowBack as ArrowBackIcon,
   Menu as MenuIcon,
@@ -13,8 +20,7 @@ import {
   useLayoutState,
 } from "../../contexts/LayoutContext"
 import { signOut, useUserDispatch } from "../../contexts/UserContext"
-// components
-import { Typography } from "../Wrappers"
+
 // styles
 import useStyles from "./styles"
 

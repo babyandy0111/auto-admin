@@ -1,10 +1,9 @@
 import React from "react"
+import { Typography } from "@mui/material"
 
-// styles
 import useStyles from "./styles"
 
 // components
-import { Typography } from "../Wrappers"
 
 export default function PageTitle(props) {
   const classes = useStyles()

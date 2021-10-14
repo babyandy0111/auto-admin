@@ -6,9 +6,10 @@ import {
   Menu,
   MenuItem,
   Toolbar,
+  Typography,
   withStyles,
-} from "@material-ui/core"
-import { alpha } from "@material-ui/core/styles"
+} from "@mui/material"
+import { alpha } from "@mui/material/styles"
 import {
   ArrowBack as ArrowBackIcon,
   MailOutline as MailIcon,
@@ -22,7 +23,6 @@ import classNames from "classnames"
 import React from "react"
 import Notification from "../Notification"
 import UserAvatar from "../UserAvatar"
-import { Badge, Typography } from "../Wrappers"
 
 const messages = [
   {
@@ -133,16 +133,7 @@ const Header = ({ classes, isSidebarOpened, toggleSidebar, ...props }) => (
         aria-controls="mail-menu"
         onClick={props.openNotificationsMenu}
         className={classes.headerMenuButton}
-      >
-        <Badge
-          badgeContent={
-            props.isNotificationsUnread ? notifications.length : null
-          }
-          colortheme="warning"
-        >
-          <NotificationsIcon classes={{ root: classes.headerIcon }} />
-        </Badge>
-      </IconButton>
+      ></IconButton>
       <IconButton
         color="inherit"
         aria-haspopup="true"

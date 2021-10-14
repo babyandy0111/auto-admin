@@ -1,16 +1,16 @@
-import React from "react"
-import { Grid, withStyles } from "@material-ui/core"
+import { Grid } from "@mui/material"
 import { Close as CloseIcon } from "@mui/icons-material"
 import classnames from "classnames"
-import { ToastContainer } from "react-toastify"
+import React from "react"
 import SyntaxHighlighter from "react-syntax-highlighter"
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs"
-import tinycolor from "tinycolor2"
+import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-import Widget from "../../components/Widget"
-import PageTitle from "../../components/PageTitle"
+import tinycolor from "tinycolor2"
 import NotificationCustomComponent from "../../components/Notification"
-import { Typography, Button } from "../../components/Wrappers"
+import PageTitle from "../../components/PageTitle"
+import Widget from "../../components/Widget"
+import { Typography, Button } from "@mui/material"
 
 const CloseButton = ({ closeToast, className }) => (
   <CloseIcon className={className} onClick={closeToast} />
@@ -361,4 +361,4 @@ const styles = (theme) => ({
   },
 })
 
-export default withStyles(styles, { withTheme: true })(NotificationsPage)
+export default NotificationsPage

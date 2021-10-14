@@ -1,5 +1,5 @@
 import React from "react"
-import { Drawer, IconButton, List, withStyles } from "@material-ui/core"
+import { Drawer, IconButton, List, withStyles } from "@mui/material"
 import {
   Home as HomeIcon,
   NotificationsNone as NotificationsIcon,
