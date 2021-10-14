@@ -25,6 +25,7 @@
     "axios": "^0.23.0",
     "classnames": "^2.3.1",
     "date-fns": "^2.25.0",
+    "dayjs": "^1.10.7",
     "font-awesome": "^4.7.0",
     "grapesjs": "^0.17.27",
     "grapesjs-custom-code": "^0.1.3",
