@@ -1,6 +1,6 @@
-import React from "react";
-import { useTheme } from "@material-ui/styles";
-import ApexCharts from "react-apexcharts";
+import React from "react"
+import { useTheme } from "@material-ui/styles"
+import ApexCharts from "react-apexcharts"
 
 const series = [
   {
@@ -66,10 +66,10 @@ const series = [
       max: 90,
     }),
   },
-];
+]
 
 export default function ApexLineChart() {
-  var theme = useTheme();
+  var theme = useTheme()
 
   return (
     <ApexCharts
@@ -78,26 +78,26 @@ export default function ApexLineChart() {
       type="heatmap"
       height={350}
     />
-  );
+  )
 }
 
 // ##################################################################
 function generateData(count, yrange) {
-  var i = 0;
-  var series = [];
+  var i = 0
+  var series = []
   while (i < count) {
-    var x = "w" + (i + 1).toString();
+    var x = "w" + (i + 1).toString()
     var y =
-      Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+      Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min
 
     series.push({
       x: x,
       y: y,
-    });
-    i++;
+    })
+    i++
   }
 
-  return series;
+  return series
 }
 
 function themeOptions(theme) {
@@ -111,5 +111,5 @@ function themeOptions(theme) {
       enabled: false,
     },
     colors: [theme.palette.primary.main],
-  };
+  }
 }

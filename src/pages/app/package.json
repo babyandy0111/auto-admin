@@ -1,6 +1,6 @@
 {
-  "name": "Verify",
+  "name": "App",
   "version": "1.0.0",
   "private": true,
-  "main": "Verify.jsx"
+  "main": "App.jsx"
 }

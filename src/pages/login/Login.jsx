@@ -42,7 +42,9 @@ function Login(props) {
     <Grid container className={classes.container}>
       <div className={classes.logotypeContainer}>
         <img src={logo} alt="logo" className={classes.logotypeImage} />
-        <Typography className={classes.logotypeText}>CodeGenApps</Typography>
+        <Typography variant="h1" className={classes.logotypeText}>
+          CodeGenApps
+        </Typography>
       </div>
       <div className={classes.formContainer}>
         <div className={classes.form}>
@@ -58,7 +60,7 @@ function Login(props) {
           </Tabs>
           {activeTabId === 0 && (
             <React.Fragment>
-              <Typography variant="h1" className={classes.greeting}>
+              <Typography variant="h3" className={classes.greeting}>
                 Hi, Good Day
               </Typography>
               <TextField
@@ -146,10 +148,10 @@ function Login(props) {
           )}
           {activeTabId === 1 && (
             <React.Fragment>
-              <Typography variant="h1" className={classes.greeting}>
+              <Typography variant="h3" className={classes.greeting}>
                 Welcome!
               </Typography>
-              <Typography variant="h2" className={classes.subGreeting}>
+              <Typography variant="h4" className={classes.subGreeting}>
                 Create your account
               </Typography>
               <Fade in={error}>

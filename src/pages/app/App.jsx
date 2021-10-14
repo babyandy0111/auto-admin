@@ -24,10 +24,10 @@ import {
   MarketplacePage,
   UseMarketplacePage,
 } from "../pages"
-import { Header, Sidebar } from "../components"
+import { Header, Sidebar } from "../../components"
 
 // context
-import { useLayoutState } from "../contexts/LayoutContext"
+import { useLayoutState } from "../../contexts/LayoutContext"
 
 const routes = [
   { path: "/app/dashboard", exact: true },

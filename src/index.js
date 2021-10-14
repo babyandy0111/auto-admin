@@ -1,13 +1,12 @@
+import { CssBaseline } from "@material-ui/core"
+import { ThemeProvider } from "@material-ui/styles"
 import React from "react"
 import ReactDOM from "react-dom"
-import { ThemeProvider } from "@material-ui/styles"
-import { CssBaseline } from "@material-ui/core"
-
-import Themes from "./themes"
 import App from "./App"
-import * as serviceWorker from "./serviceWorker"
 import { LayoutProvider } from "./contexts/LayoutContext"
 import { UserProvider } from "./contexts/UserContext"
+import * as serviceWorker from "./serviceWorker"
+import Themes from "./themes"
 
 ReactDOM.render(
   <LayoutProvider>
