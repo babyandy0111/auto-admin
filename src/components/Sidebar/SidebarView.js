@@ -10,7 +10,7 @@ import {
   LibraryBooks as LibraryIcon,
   HelpOutline as FAQIcon,
   ArrowBack as ArrowBackIcon,
-} from "@material-ui/icons"
+} from "@mui/icons-material"
 import classNames from "classnames"
 
 import SidebarLink from "./components/SidebarLink/SidebarLinkContainer"

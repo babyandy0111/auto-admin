@@ -17,7 +17,7 @@ import {
   Person as AccountIcon,
   Search as SearchIcon,
   Send as SendIcon,
-} from "@material-ui/icons"
+} from "@mui/icons-material"
 import classNames from "classnames"
 import React from "react"
 import Notification from "../Notification"

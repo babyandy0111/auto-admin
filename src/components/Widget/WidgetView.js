@@ -7,7 +7,7 @@ import {
   MenuItem,
   withStyles
 } from "@material-ui/core";
-import { MoreVert as MoreIcon } from "@material-ui/icons";
+import { MoreVert as MoreIcon } from "@mui/icons-material";
 import Typography from "@material-ui/core/es/Typography/Typography";
 
 const Widget = ({

@@ -3,7 +3,7 @@ import {
   ArrowBack as ArrowBackIcon,
   Menu as MenuIcon,
   Person as AccountIcon,
-} from "@material-ui/icons"
+} from "@mui/icons-material"
 import classNames from "classnames"
 import React, { useState } from "react"
 // context

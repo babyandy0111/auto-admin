@@ -10,7 +10,6 @@ import {
   NotificationsPage,
   MapsPage,
   TablesPage,
-  IconsPage,
   ChartsPage,
   ErdPage,
   DataManageSourcePage,
@@ -60,7 +59,6 @@ const routes = [
 
   { path: "/app/ui", exact: true },
   { path: "/app/ui/maps", component: MapsPage },
-  { path: "/app/ui/icons", component: IconsPage },
   { path: "/app/ui/charts", component: ChartsPage },
 ]
 
