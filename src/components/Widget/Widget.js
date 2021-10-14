@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 import {
   Paper,
   IconButton,
   Menu,
   MenuItem,
   Typography,
-} from "@material-ui/core";
-import { MoreVert as MoreIcon } from "@material-ui/icons";
-import classnames from "classnames";
+} from "@mui/material"
+import { MoreVert as MoreIcon } from "@mui/icons-material"
+import classnames from "classnames"
 
 // styles
-import useStyles from "./styles";
+import useStyles from "./styles"
 
 export default function Widget({
   children,
@@ -25,21 +25,28 @@ export default function Widget({
   noWidgetShadow,
   ...props
 }) {
-  var classes = useStyles();
+  var classes = useStyles()
 
   // local
-  var [moreButtonRef, setMoreButtonRef] = useState(null);
-  var [isMoreMenuOpen, setMoreMenuOpen] = useState(false);
+  var [moreButtonRef, setMoreButtonRef] = useState(null)
+  var [isMoreMenuOpen, setMoreMenuOpen] = useState(false)
 
   return (
-    <div className={classes.widgetWrapper} style={style && {...style}}>
-      <Paper className={classes.paper} classes={{ root: classnames(classes.widgetRoot, {
-        [classes.noWidgetShadow]: noWidgetShadow
-        }) }}>
-        <div className={classnames(classes.widgetHeader, {
-          [classes.noPadding]: noHeaderPadding,
-          [headerClass]: headerClass
-        })}>
+    <div className={classes.widgetWrapper} style={style && { ...style }}>
+      <Paper
+        className={classes.paper}
+        classes={{
+          root: classnames(classes.widgetRoot, {
+            [classes.noWidgetShadow]: noWidgetShadow,
+          }),
+        }}
+      >
+        <div
+          className={classnames(classes.widgetHeader, {
+            [classes.noPadding]: noHeaderPadding,
+            [headerClass]: headerClass,
+          })}
+        >
           {header ? (
             header
           ) : (
@@ -92,5 +99,5 @@ export default function Widget({
         </MenuItem>
       </Menu>
     </div>
-  );
+  )
 }

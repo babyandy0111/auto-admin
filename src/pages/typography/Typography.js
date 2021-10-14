@@ -1,16 +1,17 @@
-import React from "react";
-import { Grid } from "@material-ui/core";
+import React from "react"
+import { Grid } from "@mui/material"
 
 // styles
-import useStyles from "./styles";
+import useStyles from "./styles"
 
 // components
-import PageTitle from "../../components/PageTitle";
-import Widget from "../../components/Widget";
-import { Typography } from "../../components/Wrappers";
+import PageTitle from "../../components/PageTitle"
+import Widget from "../../components/Widget"
+
+import { Typography } from "@mui/material"
 
 export default function TypographyPage() {
-  var classes = useStyles();
+  var classes = useStyles()
 
   return (
     <>
@@ -122,5 +123,5 @@ export default function TypographyPage() {
         </Grid>
       </Grid>
     </>
-  );
+  )
 }

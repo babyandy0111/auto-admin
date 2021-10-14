@@ -1,35 +1,38 @@
-import axios from "axios";
-import {baseUrl, deBugModel} from "./base";
+import axios from "axios"
+import { baseUrl, deBugModel } from "./base"
 
-axios.defaults.baseURL = baseUrl;
-const $http = axios.create();
+axios.defaults.baseURL = baseUrl
+const $http = axios.create()
 
-$http.interceptors.request.use(config => {
-    if (deBugModel) {
-        console.log(`request ${config.method} ${config.url} => `, config.data);
-    }
-    config.headers.Bearer = localStorage.getItem("id_token");
-    return config
+$http.interceptors.request.use((config) => {
+  if (deBugModel) {
+    console.log(`request ${config.method} ${config.url} => `, config.data)
+  }
+  config.headers.Bearer = localStorage.getItem("id_token")
+  return config
 })
 
-$http.interceptors.response.use((response) => {
+$http.interceptors.response.use(
+  (response) => {
     if (deBugModel) {
-        console.log(`response ${response.status} : `, response.data)
+      console.log(`response ${response.status} : `, response.data)
     }
     if (response.status === 200) {
-        return response.data;
+      return response.data
     }
-}, (err) => {
+  },
+  (err) => {
     if (deBugModel) {
-        console.log(err);
+      console.log(err)
     }
     if (err.response.status === 401) {
-        localStorage.removeItem("id_token");
-        window.location.href = `${process.env.REACT_APP_BASE_HREF}/login`;
+      localStorage.removeItem("id_token")
+      window.location.href = `${process.env.REACT_APP_BASE_HREF}/login`
     }
     if (err.response.status === 400) {
-        return Promise.reject(err);
+      return Promise.reject(err)
     }
-})
+  },
+)
 
-export default $http;
+export default $http

@@ -1,5 +1,5 @@
-import React from "react";
-import { Button } from "@material-ui/core";
+import React from "react"
+import { Button, Typography } from "@mui/material"
 import {
   NotificationsNone as NotificationsIcon,
   ThumbUp as ThumbUpIcon,
@@ -14,16 +14,13 @@ import {
   AccountBox as CustomerIcon,
   Done as ShippedIcon,
   Publish as UploadIcon,
-} from "@material-ui/icons";
-import { useTheme } from "@material-ui/styles";
-import classnames from "classnames";
-import tinycolor from "tinycolor2";
+} from "@mui/icons-material"
+import { useTheme } from "@material-ui/styles"
+import classnames from "classnames"
+import tinycolor from "tinycolor2"
 
 // styles
-import useStyles from "./styles";
-
-// components
-import { Typography } from "../Wrappers";
+import useStyles from "./styles"
 
 const typesIcons = {
   "e-commerce": <ShoppingCartIcon />,
@@ -39,13 +36,13 @@ const typesIcons = {
   report: <ReportIcon />,
   upload: <UploadIcon />,
   disc: <DiscIcon />,
-};
+}
 
 export default function Notification({ variant, ...props }) {
-  var classes = useStyles();
-  var theme = useTheme();
+  var classes = useStyles()
+  var theme = useTheme()
 
-  const icon = getIconByType(props.type);
+  const icon = getIconByType(props.type)
   const iconWithStyles = React.cloneElement(icon, {
     classes: {
       root: classes.notificationIcon,
@@ -56,7 +53,7 @@ export default function Notification({ variant, ...props }) {
         theme.palette[props.color] &&
         theme.palette[props.color].main,
     },
-  });
+  })
 
   return (
     <div
@@ -108,10 +105,10 @@ export default function Notification({ variant, ...props }) {
         )}
       </div>
     </div>
-  );
+  )
 }
 
 // ####################################################################
 function getIconByType(type = "offer") {
-  return typesIcons[type];
+  return typesIcons[type]
 }

@@ -1,12 +1,7 @@
-import React from "react";
+import React from "react"
 
 const ApiList = () => {
-
-    return (
-        <>
-            ApiList
-        </>
-    )
+  return <>ApiList</>
 }
 
 export default ApiList
