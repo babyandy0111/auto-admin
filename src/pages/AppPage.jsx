@@ -8,7 +8,8 @@ import {
   IconButton,
   List,
   ListItemIcon,
-  ListItemText
+  ListItemText,
+  Tooltip,
 } from "@mui/material"
 import {
   SendIcon,
@@ -168,9 +169,11 @@ function Sidebar() {
       {appRoutes.map((appRoute, i) =>
         <>
           <ListItemButton key={appRoute.text} onClick={() => setActive(i)}>
-            <ListItemIcon>
-              {appRoute.icon}
-            </ListItemIcon>
+            <Tooltip title={appRoute.text}>
+              <ListItemIcon>
+                {appRoute.icon}
+              </ListItemIcon>
+            </Tooltip>
             <ListItemText primary={appRoute.text} />
             {appRoute?.routes && (active === i ? <ExpandLessIcon /> : <ExpandMoreIcon />)}
           </ListItemButton>
@@ -180,9 +183,11 @@ function Sidebar() {
               {appRoute.routes.map(route =>
                 <List component="div" disablePadding>
                   <ListItemButton>
-                    <ListItemIcon>
-                      {route.icon}
-                    </ListItemIcon>
+                    <Tooltip title={`${route.text} / ${appRoute.text}`}>
+                      <ListItemIcon>
+                        {route.icon}
+                      </ListItemIcon>
+                    </Tooltip>
                     <ListItemText primary={route.text} />
                   </ListItemButton>
                 </List>
@@ -214,7 +219,7 @@ const closedMixin = (theme) => ({
   overflowX: "hidden",
   width: `calc(${theme.spacing(5)} + 1px)`,
   [theme.breakpoints.up("sm")]: {
-    width: `calc(${theme.spacing(9)} + 1px)`,
+    width: `calc(${theme.spacing(7)} + 1px)`,
   },
 })
 
