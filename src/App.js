@@ -2,7 +2,6 @@ import React from "react"
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom"
 import { useUserState } from "./contexts/UserContext"
 import { AppPage, ErrorPage, LoginPage } from "./pages"
-import Layout from "./layouts/Layout"
 
 export default function App() {
   // global
