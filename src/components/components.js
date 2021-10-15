@@ -1,6 +1,0 @@
-export { default as Header } from "../components/Header"
-export { default as Notification } from "../components/Notification"
-export { default as PageTitle } from "../components/PageTitle"
-export { default as Sidebar } from "../components/Sidebar"
-export { default as UserAvatar } from "../components/UserAvatar"
-export { default as Widget } from "../components/Widget"

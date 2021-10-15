@@ -6,7 +6,7 @@ import {
   TableBody,
   TableCell,
   Chip
-} from "@mui/material";
+} from "@material-ui/core";
 import useStyles from "../../styles";
 
 const states = {
