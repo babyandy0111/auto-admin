@@ -13,7 +13,6 @@ export default function App() {
       <Switch>
         <Route exact path="/" render={() => <Redirect to="/app/dashboard/test" />} />
         <Route exact path="/app" render={() => <Redirect to="/app/dashboard" />} />
-        <PrivateRoute path="/layout" component={Layout} />
         <PrivateRoute path="/app" component={AppPage} />
         <PublicRoute path="/login" component={LoginPage} />
         <Route component={ErrorPage} />

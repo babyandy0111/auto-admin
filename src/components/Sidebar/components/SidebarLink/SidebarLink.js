@@ -1,40 +1,21 @@
-import React, { useState } from "react";
-import {
-  Collapse,
-  Divider,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Typography,
-} from "@mui/material";
-import { Inbox as InboxIcon } from "@mui/icons-material";
-import { Link } from "react-router-dom";
-import classnames from "classnames";
+import React, { useState } from "react"
+import { Collapse, Divider, List, ListItem, ListItemIcon, ListItemText, Typography } from "@mui/material"
+import { Inbox as InboxIcon } from "@mui/icons-material"
+import { Link } from "react-router-dom"
+import classnames from "classnames"
 
 // styles
-import useStyles from "./styles";
+import useStyles from "./styles"
 
 // components
-import Dot from "../Dot";
+import Dot from "../Dot"
 
-export default function SidebarLink({
-  link,
-  icon,
-  label,
-  children,
-  location,
-  isSidebarOpened,
-  nested,
-  type,
-}) {
-  var classes = useStyles();
+export default function SidebarLink({ link, icon, label, children, location, isSidebarOpened, nested, type }) {
+  var classes = useStyles()
 
   // local
-  var [isOpen, setIsOpen] = useState(false);
-  var isLinkActive =
-    link &&
-    (location.pathname === link || location.pathname.indexOf(link) !== -1);
+  var [isOpen, setIsOpen] = useState(false)
+  var isLinkActive = link && (location.pathname === link || location.pathname.indexOf(link) !== -1)
 
   if (type === "title")
     return (
@@ -45,10 +26,10 @@ export default function SidebarLink({
       >
         {label}
       </Typography>
-    );
+    )
 
-  if (type === "divider") return <Divider className={classes.divider} />;
-  if (link && link.includes('http')) {
+  if (type === "divider") return <Divider className={classes.divider} />
+  if (link && link.includes("http")) {
     return (
       <ListItem
         button
@@ -62,22 +43,22 @@ export default function SidebarLink({
         disableRipple
       >
         <a className={classes.externalLink} href={link}>
-        <ListItemIcon
-          className={classnames(classes.linkIcon, {
-            [classes.linkIconActive]: isLinkActive,
-          })}
-        >
-          {nested ? <Dot color={isLinkActive && "primary"} /> : icon}
-        </ListItemIcon>
-        <ListItemText
-          classes={{
-            primary: classnames(classes.linkText, {
-              [classes.linkTextActive]: isLinkActive,
-              [classes.linkTextHidden]: !isSidebarOpened,
-            }),
-          }}
-          primary={label}
-        />
+          <ListItemIcon
+            className={classnames(classes.linkIcon, {
+              [classes.linkIconActive]: isLinkActive,
+            })}
+          >
+            {nested ? <Dot color={isLinkActive && "primary"} /> : icon}
+          </ListItemIcon>
+          <ListItemText
+            classes={{
+              primary: classnames(classes.linkText, {
+                [classes.linkTextActive]: isLinkActive,
+                [classes.linkTextHidden]: !isSidebarOpened,
+              }),
+            }}
+            primary={label}
+          />
         </a>
       </ListItem>
     )
@@ -114,7 +95,7 @@ export default function SidebarLink({
           primary={label}
         />
       </ListItem>
-    );
+    )
 
   return (
     <>
@@ -144,12 +125,7 @@ export default function SidebarLink({
         />
       </ListItem>
       {children && (
-        <Collapse
-          in={isOpen && isSidebarOpened}
-          timeout="auto"
-          unmountOnExit
-          className={classes.nestedList}
-        >
+        <Collapse in={isOpen && isSidebarOpened} timeout="auto" unmountOnExit className={classes.nestedList}>
           <List component="div" disablePadding>
             {children.map(childrenLink => (
               <SidebarLink
@@ -165,14 +141,14 @@ export default function SidebarLink({
         </Collapse>
       )}
     </>
-  );
+  )
 
   // ###########################################################
 
   function toggleCollapse(e) {
     if (isSidebarOpened) {
-      e.preventDefault();
-      setIsOpen(!isOpen);
+      e.preventDefault()
+      setIsOpen(!isOpen)
     }
   }
 }

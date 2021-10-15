@@ -1,5 +1,6 @@
 export { default as ApiListPage } from "../pages/apilist"
 export { default as AppPage } from "../pages/AppPage"
+export { default as ApiCreatePage } from "../pages/ApiCreatePage"
 export { default as AuthPage } from "../pages/auth"
 export { default as ChartsPage } from "../pages/charts"
 export { default as DashboardPage } from "../pages/dashboard"
