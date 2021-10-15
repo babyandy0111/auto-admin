@@ -1,7 +1,7 @@
 import React from "react"
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom"
 import { useUserState } from "./contexts/UserContext"
-import { ErrorPage, LoginPage } from "./pages"
+import { AppPage, ErrorPage, LoginPage } from "./pages"
 import Layout from "./layouts/Layout"
 
 export default function App() {
@@ -11,17 +11,10 @@ export default function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route
-          exact
-          path="/"
-          render={() => <Redirect to="/app/dashboard/test" />}
-        />
-        <Route
-          exact
-          path="/app"
-          render={() => <Redirect to="/app/dashboard" />}
-        />
-        <PrivateRoute path="/app" component={Layout} />
+        <Route exact path="/" render={() => <Redirect to="/app/dashboard/test" />} />
+        <Route exact path="/app" render={() => <Redirect to="/app/dashboard" />} />
+        <PrivateRoute path="/layout" component={Layout} />
+        <PrivateRoute path="/app" component={AppPage} />
         <PublicRoute path="/login" component={LoginPage} />
         <Route component={ErrorPage} />
       </Switch>
@@ -32,7 +25,7 @@ export default function App() {
     return (
       <Route
         {...rest}
-        render={(props) =>
+        render={props =>
           isAuthenticated ? (
             React.createElement(component, props)
           ) : (
@@ -54,7 +47,7 @@ export default function App() {
     return (
       <Route
         {...rest}
-        render={(props) =>
+        render={props =>
           isAuthenticated ? (
             <Redirect
               to={{

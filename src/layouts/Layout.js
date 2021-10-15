@@ -79,7 +79,7 @@ function Layout(props) {
       >
         <div className={classes.fakeToolbar} />
         <Switch>
-          {routes.map((route) => (
+          {routes.map(route => (
             <Route {...route} />
           ))}
         </Switch>
