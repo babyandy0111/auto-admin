@@ -1,5 +1,5 @@
 import React from "react";
-import { withStyles } from "@mui/material";
+import { withStyles } from "@material-ui/core";
 import { compose, withState, withHandlers } from "recompose";
 import { toast } from "react-toastify";
 

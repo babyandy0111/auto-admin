@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/styles"
+import { makeStyles } from "@material-ui/styles";
 
 export default makeStyles(() => ({
   avatar: {
@@ -12,4 +12,4 @@ export default makeStyles(() => ({
   text: {
     color: "white",
   },
-}))
+}));

@@ -1,7 +1,12 @@
-import React from "react"
+import React from "react";
 
 const TableManage = () => {
-  return <>TableManage</>
+
+    return (
+        <>
+            TableManage
+        </>
+    )
 }
 
 export default TableManage
