@@ -15,9 +15,9 @@ import { useState } from "react"
 import { Link, Route, Switch } from "react-router-dom"
 import {
   ApiIcon, ChevronLeftIcon,
-  ChevronRightIcon, CodeIcon, ExpandLessIcon,
-  ExpandMoreIcon, MenuIcon, SendIcon,
-  StarBorder
+  ChevronRightIcon, ExpandLessIcon,
+  ExpandMoreIcon, MenuIcon,
+  AddIcon
 } from '../../images/icons'
 import {
   ApiCreatePage, ApiListPage,
@@ -40,90 +40,74 @@ const AppPage = () => {
 
   const appRoutes = [
     {
-      text: 'API Management',
-      icon: <CodeIcon />,
-      path: "/app/api-management",
-      routes: [
-        { text: '', path: "/data-source", component: DataManageSourcePage },
-        { text: '', path: "/table-management", component: TableManagePage },
-        { text: 'Create API', icon: <ApiIcon />, path: "/create", component: ApiCreatePage },
-        { text: '', path: "/api-list", component: ApiListPage },
-        { text: '', path: "/auth", component: AuthPage },
-        { text: '', path: "/verify", component: VerifyPagePage },
+      rootPath: "/app/api-management",
+      leafPaths: [
+        { path: "/data-source", component: DataManageSourcePage },
+        { path: "/table-management", component: TableManagePage },
+        { path: "/create", component: ApiCreatePage },
+        { path: "/api-list", component: ApiListPage },
+        { path: "/auth", component: AuthPage },
+        { path: "/verify", component: VerifyPagePage },
       ]
     },
     {
-      text: 'Domain Management',
-      icon: <SendIcon />,
-      path: "/app/domain-management",
-      routes: [
-        { text: '', path: "/create", component: DomainPage },
+      rootPath: "/app/domain-management",
+      leafPaths: [
+        { path: "/create", component: DomainPage },
       ]
     },
     {
-      text: 'Data Management',
-      path: "/app/data-management",
-      icon: <SendIcon />,
-      routes: [
-        { text: '', path: "/table-list", component: DataTableListPage },
-        { text: '', path: "/module-list", component: DataModulePage }
+      rootPath: "/app/data-management",
+      leafPaths: [
+        { path: "/table-list", component: DataTableListPage },
+        { path: "/module-list", component: DataModulePage }
       ]
     },
     {
-      text: 'Dashboard',
-      icon: <SendIcon />,
-      path: "/app/dashboard",
-      routes: [
-        { text: '', path: "/test", component: DashboardPage },
-        { text: '', path: "/storage", component: StorageS3Page },
-        { text: '', path: "/log", component: LogPage },
-        { text: '', path: "/erd", component: ErdPage },
+      rootPath: "/app/dashboard",
+      leafPaths: [
+        { path: "/test", component: DashboardPage },
+        { path: "/storage", component: StorageS3Page },
+        { path: "/log", component: LogPage },
+        { path: "/erd", component: ErdPage },
       ]
     },
     {
-      text: 'Marketplace',
-      icon: <SendIcon />,
-      path: "/app/marketplace",
-      routes: [
-        { text: '', path: "/use-list", component: UseMarketplacePage },
-        { text: '', path: "/module-list", component: MarketplacePage }
+      rootPath: "/app/marketplace",
+      leafPaths: [
+        { path: "/use-list", component: UseMarketplacePage },
+        { path: "/module-list", component: MarketplacePage }
       ]
     },
     {
-      text: 'Account Management',
-      path: "/app/marketplace",
-      icon: <SendIcon />,
-      routes: [
-        { text: '', path: "/use-list", component: UseMarketplacePage },
-        { text: '', path: "/module-list", component: MarketplacePage }
+      rootPath: "/app/marketplace",
+      leafPaths: [
+        { path: "/use-list", component: UseMarketplacePage },
+        { path: "/module-list", component: MarketplacePage }
       ]
     },
     {
-      text: 'Billing',
-      path: "/app/marketplace",
-      icon: <SendIcon />,
-      routes: [
-        { text: '', icon: <StarBorder />, path: "/use-list", component: UseMarketplacePage },
-        { text: '', path: "/module-list", component: MarketplacePage }
+      rootPath: "/app/marketplace",
+      leafPaths: [
+        { path: "/use-list", component: UseMarketplacePage },
+        { path: "/module-list", component: MarketplacePage }
       ]
     },
-    { text: 'Auto Form', icon: <SendIcon />, path: "/app/marketplace" },
+    { rootPath: "/app/marketplace" },
   ]
 
 
-  const routes = flatten(appRoutes.map(appRoute => {
-    return [
-      {
-        path: appRoute.path,
-        exact: true,
-        component: appRoute.component
-      },
-      ...appRoute.routes?.map(route => ({
-        path: `${appRoute.path}${route.path}`,
-        component: route.component
-      })) || []
-    ]
-  }))
+  const routes = flatten(appRoutes.map(appRoute => [
+    {
+      path: appRoute.rootPath,
+      exact: true,
+    },
+    ...(appRoute.leafPaths || []).map(({ path, component }) => ({
+      path: `${appRoute.rootPath}${path}`,
+      component
+    }))
+  ]
+  ))
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -176,12 +160,12 @@ const AppPage = () => {
 const sidebar = [
   {
     text: 'API Management',
-    icon: <CodeIcon />,
+    icon: <ApiIcon />,
     path: "/app/api-management",
     routes: [
       // { text: '', path: "/data-source" },
       // { text: '', path: "/table-management" },
-      { text: 'Create API', icon: <ApiIcon />, path: "/create" },
+      { text: 'Create API', icon: <AddIcon />, path: "/create" },
       // { text: '', path: "/api-list" },
       // { text: '', path: "/auth" },
       // { text: '', path: "/verify" },

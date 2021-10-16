@@ -25,9 +25,7 @@ function UserProvider({ children }) {
 
   return (
     <UserStateContext.Provider value={state}>
-      <UserDispatchContext.Provider value={dispatch}>
-        {children}
-      </UserDispatchContext.Provider>
+      <UserDispatchContext.Provider value={dispatch}>{children}</UserDispatchContext.Provider>
     </UserStateContext.Provider>
   )
 }
@@ -48,69 +46,43 @@ function useUserDispatch() {
   return context
 }
 
-function loginUser(
-  dispatch,
-  companyName,
-  email,
-  password,
-  history,
-  setIsLoading,
-  setError,
-) {
+function loginUser(dispatch, companyName, email, password, history, setIsLoading, setError) {
   setError(false)
   setIsLoading(true)
 
   if (!!companyName && !!email && !!password) {
     const params = { name: companyName, account: email, password: password }
+
     API.postLogin(params)
-      .then((res) => {
-        if (res.token != null) {
-          localStorage.setItem("id_token", res.token)
-          setError(null)
-          setIsLoading(false)
-          dispatch({ type: "LOGIN_SUCCESS" })
-          history.push("/app/dashboard")
-        } else {
+      .then(res => {
+        if (res.token === null) {
           dispatch({ type: "LOGIN_FAILURE" })
           setError(true)
-          setIsLoading(false)
+          return
         }
+        dispatch({ type: "LOGIN_SUCCESS" })
+        setError(null)
+        localStorage.setItem("id_token", res.token)
+        history.push("/app/dashboard")
       })
-      .catch((e) => {
-        console.log(e)
-      })
+      .catch(e => console.log(e))
+      .finally(() => setIsLoading(false))
   }
 }
 
-function createUser(
-  dispatch,
-  companyName,
-  email,
-  password,
-  history,
-  setIsLoading,
-  setError,
-) {
+function createUser(dispatch, companyName, email, password, history, setIsLoading, setError) {
   setError(false)
   setIsLoading(true)
 
   if (!!companyName && !!email && !!password) {
     const params = { name: companyName, account: email, password: password }
     API.postAccount(params)
-      .then((res) => {
+      .then(res => {
         if (res.id != null) {
-          loginUser(
-            dispatch,
-            companyName,
-            email,
-            password,
-            history,
-            setIsLoading,
-            setError,
-          )
+          loginUser(dispatch, companyName, email, password, history, setIsLoading, setError)
         }
       })
-      .catch((e) => {
+      .catch(e => {
         console.log(e)
       })
   }
@@ -122,11 +94,4 @@ function signOut(dispatch, history) {
   history.push("/login")
 }
 
-export {
-  UserProvider,
-  useUserState,
-  useUserDispatch,
-  loginUser,
-  signOut,
-  createUser,
-}
+export { UserProvider, useUserState, useUserDispatch, loginUser, signOut, createUser }
