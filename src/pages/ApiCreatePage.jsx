@@ -1,13 +1,8 @@
-import { useEffect } from 'react'
+import { useState } from 'react'
 import Select from '../components/basic/Select'
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider,
-} from 'react-query'
+import { useQuery } from 'react-query'
 import ky from 'ky'
+import { project } from 'ramda'
 
 const api = ky.extend({
   hooks: {
@@ -17,20 +12,22 @@ const api = ky.extend({
       }
     ]
   }
-});
-
-
-
+})
 
 function ApiCreatePage() {
-  // useQuery('workspace')
+  const { isLoading, data: workspaces } = useQuery('workspace', () => api.get('https://app-api.codegenapps.com/v1/resources/mysql?page=1&per_page=20').json()
+    .then(response => project(['id', 'name'], response.resources))
+    .catch(err => console.log(err)))
 
-  // const response = ky.get('https://app-api.codegenapps.com/v1/resources/mysql?page=1&per_page=20')
-  // console.log(response)
+  const [workspaceId, setWorkspaceId] = useState(undefined)
 
-  return <div>
-    <Select value={'value'} onChange={(value) => console.log(value)} label="Workspace" options={[{ value: 'value', name: 'name' }, { value: 'value1', name: 'name2' }]} />
-  </div>
+  return <Select
+    label="Workspace"
+    disabled={isLoading}
+    value={workspaceId}
+    options={workspaces?.map(workspace => ({ value: workspace.id, name: workspace.name })) || []}
+    onChange={(value) => setWorkspaceId(value)}
+  />
 }
 
 export default ApiCreatePage

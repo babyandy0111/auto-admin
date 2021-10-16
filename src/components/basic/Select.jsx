@@ -5,13 +5,13 @@ import {
   MenuItem
 } from "@mui/material"
 
-function Select({ label, value, options, onChange }) {
-  return <FormControl fullWidth>
+function Select({ disable, label, value = "", options, onChange }) {
+  return <FormControl disable={disable} fullWidth>
     <InputLabel>{label}</InputLabel>
     <MuiSelect
       label={label}
       value={value}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={(e) => onChange?.(e.target.value)}
     >
       {options.map((option, i) => <MenuItem key={`${options.value}${i}`} value={option.value}>{option.name}</MenuItem>)}
     </MuiSelect>
