@@ -5,8 +5,8 @@ import { Grid } from "@mui/material"
 import useStyles from "./styles"
 
 // components
-import PageTitle from "../../components/PageTitle"
-import Widget from "../../components/Widget"
+import PageTitle from "../../components/basic/PageTitle"
+import Widget from "../../components/basic/Widget"
 
 import { Typography } from "@mui/material"
 

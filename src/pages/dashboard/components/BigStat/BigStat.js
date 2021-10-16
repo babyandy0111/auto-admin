@@ -6,7 +6,7 @@ import classnames from "classnames"
 import React, { useState } from "react"
 import { Bar, BarChart } from "recharts"
 // components
-import Widget from "../../../../components/Widget"
+import Widget from "../../../../components/basic/Widget"
 // styles
 import useStyles from "./styles"
 

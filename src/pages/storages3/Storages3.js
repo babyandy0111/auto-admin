@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import PageTitle from "../../components/PageTitle"
+import PageTitle from "../../components/basic/PageTitle"
 import { Button, Grid } from "@mui/material"
 import MUIDataTable from "mui-datatables"
 import API from "../../server/api"

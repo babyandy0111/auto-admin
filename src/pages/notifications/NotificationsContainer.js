@@ -3,7 +3,7 @@ import { withStyles } from "@mui/material";
 import { compose, withState, withHandlers } from "recompose";
 import { toast } from "react-toastify";
 
-import Notification from "../../components/Notification";
+import Notification from "../../components/basic/Notification";
 import NotificationsView from "./NotificationsView";
 
 const positions = [

@@ -7,14 +7,19 @@ import { LayoutProvider } from "./contexts/LayoutContext"
 import { UserProvider } from "./contexts/UserContext"
 import * as serviceWorker from "./serviceWorker"
 import Themes from "./themes"
+import { QueryClient, QueryClientProvider } from "react-query"
+
+const queryClient = new QueryClient()
 
 ReactDOM.render(
   <LayoutProvider>
     <UserProvider>
-      <ThemeProvider theme={Themes.default}>
-        <CssBaseline />
-        <App />
-      </ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={Themes.default}>
+          <CssBaseline />
+          <App />
+        </ThemeProvider>
+      </QueryClientProvider>
     </UserProvider>
   </LayoutProvider>,
   document.getElementById("root"),

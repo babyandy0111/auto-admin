@@ -1,15 +1,14 @@
-import React from "react"
 import { makeStyles } from "@material-ui/styles"
-import CssBaseline from "@mui/material/CssBaseline"
 import AppBar from "@mui/material/AppBar"
-import Toolbar from "@mui/material/Toolbar"
-import Paper from "@mui/material/Paper"
-import Stepper from "@mui/material/Stepper"
-import Step from "@mui/material/Step"
-import StepLabel from "@mui/material/StepLabel"
 import Button from "@mui/material/Button"
 import Link from "@mui/material/Link"
+import Paper from "@mui/material/Paper"
+import Step from "@mui/material/Step"
+import StepLabel from "@mui/material/StepLabel"
+import Stepper from "@mui/material/Stepper"
+import Toolbar from "@mui/material/Toolbar"
 import Typography from "@mui/material/Typography"
+import React from "react"
 import AddressForm from "./AddressForm"
 import PaymentForm from "./PaymentForm"
 import Review from "./Review"
@@ -27,7 +26,7 @@ function Copyright() {
   )
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   appBar: {
     position: "relative",
   },
@@ -93,7 +92,7 @@ export default function Checkout() {
 
   return (
     <React.Fragment>
-      <CssBaseline />
+      {" "}
       <AppBar position="absolute" color="default" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" color="inherit" noWrap>
@@ -107,7 +106,7 @@ export default function Checkout() {
             Checkout
           </Typography>
           <Stepper activeStep={activeStep} className={classes.stepper}>
-            {steps.map((label) => (
+            {steps.map(label => (
               <Step key={label}>
                 <StepLabel>{label}</StepLabel>
               </Step>
@@ -120,9 +119,8 @@ export default function Checkout() {
                   Thank you for your order.
                 </Typography>
                 <Typography variant="subtitle1">
-                  Your order number is #2001539. We have emailed your order
-                  confirmation, and will send you an update when your order has
-                  shipped.
+                  Your order number is #2001539. We have emailed your order confirmation, and will send you an update
+                  when your order has shipped.
                 </Typography>
               </React.Fragment>
             ) : (
@@ -134,12 +132,7 @@ export default function Checkout() {
                       Back
                     </Button>
                   )}
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    className={classes.button}
-                  >
+                  <Button variant="contained" color="primary" onClick={handleNext} className={classes.button}>
                     {activeStep === steps.length - 1 ? "Place order" : "Next"}
                   </Button>
                 </div>

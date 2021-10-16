@@ -1,39 +1,27 @@
-import { useState } from "react"
-import { Route, Switch, Link } from "react-router-dom"
-import { flatten } from 'ramda'
 import {
   AppBar,
-  Box,
-  CssBaseline,
-  Collapse,
+  Box, Collapse,
   Divider,
   Drawer,
   IconButton,
-  List,
-  ListItemIcon,
-  ListItemText,
-  ListItemButton,
-  Toolbar,
+  List, ListItemButton, ListItemIcon,
+  ListItemText, Toolbar,
   Tooltip,
-  Typography,
+  Typography
 } from "@mui/material"
 import { styled, useTheme } from "@mui/material/styles"
+import { flatten } from 'ramda'
+import { useState } from "react"
+import { Link, Route, Switch } from "react-router-dom"
 import {
-  SendIcon,
-  StarBorder,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  MenuIcon,
-  ExpandLessIcon,
-  ExpandMoreIcon,
-  CodeIcon,
-  ApiIcon
-} from '../images/icons'
+  ApiIcon, ChevronLeftIcon,
+  ChevronRightIcon, CodeIcon, ExpandLessIcon,
+  ExpandMoreIcon, MenuIcon, SendIcon,
+  StarBorder
+} from '../../images/icons'
 import {
-  ApiListPage,
-  AuthPage,
-  ApiCreatePage,
-  DashboardPage,
+  ApiCreatePage, ApiListPage,
+  AuthPage, DashboardPage,
   DataManageSourcePage,
   DataModulePage,
   DataTableListPage,
@@ -46,8 +34,6 @@ import {
   UseMarketplacePage,
   VerifyPagePage
 } from "../pages"
-
-
 const AppPage = () => {
   const theme = useTheme()
   const [open, setOpen] = useState(false)
@@ -141,7 +127,6 @@ const AppPage = () => {
 
   return (
     <Box sx={{ display: "flex" }}>
-      <CssBaseline />
       <StyledAppBar position="fixed" open={open}>
         <Toolbar>
           <IconButton
