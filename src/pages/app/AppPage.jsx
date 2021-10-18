@@ -146,7 +146,6 @@ const AppPage = () => {
 
       </StyledDrawer>
       <Box component='main' mt={8} sx={{ flexGrow: 1, p: 3 }}>
-
         <Switch>
           {routes.map(
             ({ path, exact, component }) => <Route key={path} path={path} exact={exact} component={component} />
