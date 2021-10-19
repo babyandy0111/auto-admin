@@ -3,15 +3,18 @@ import { useQuery } from 'react-query'
 import { project } from 'ramda'
 import { Paper, Grid, Tab, TextField, Button } from '@mui/material'
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import Select from '../components/basic/Select'
+import { Select, Table } from '../components/basic'
 import API from '../server/api'
 import { useForm, useFieldArray } from 'react-hook-form'
 
 function ApiCreatePage() {
-  const { isLoading, data: workspaces } = useQuery('workspace', () => API.getResourcesMysql({ page: 1, per_page: 20 })
-    .then(response => project(['id', 'name'], response.resources))
-    .catch(err => console.log(err)))
+  const { isLoading, data: workspaces } = useQuery('workspace', () => API.getResourcesMysql()
+    .then(res => project(["id", "name"], res.resources))
+    .catch(err => console.log(err))
+  )
+  const { data: domains } = useQuery('domain', API.getResourcesSubdomain)
   const [workspaceId, setWorkspaceId] = useState(undefined)
+  const [domainId, setDomainId] = useState(undefined)
 
   return (
     <AppPageLayout>
@@ -29,17 +32,17 @@ function ApiCreatePage() {
           <Grid item md={6}>
             <Select
               label="Domain"
-              disabled={isLoading}
-              value={workspaceId}
-              options={workspaces?.map(workspace => ({ value: workspace.id, name: workspace.name })) || []}
-              onChange={(value) => setWorkspaceId(value)}
+              disabled={false}
+              value={domainId}
+              options={domains?.map(domain => ({ value: domain.id, name: domain.name })) || []}
+              onChange={(value) => setDomainId(value)}
             />
           </Grid>
         </Grid>
       </Paper>
 
       <Paper sx={{ marginBottom: 4 }}>
-        <ApiModifyForm />
+        <ApiModifyForm workspaceId={workspaceId} domainId={domainId} />
       </Paper>
 
       <Paper sx={{ marginBottom: 4 }}>
@@ -49,12 +52,20 @@ function ApiCreatePage() {
   )
 }
 
-const ApiModifyForm = () => {
-  const { isLoading, data: workspaces } = useQuery('workspace', () => API.getResourcesMysql({ page: 1, per_page: 20 })
-    .then(response => project(['id', 'name'], response.resources))
+const httpMethods = ['GET', 'POST', "PUT", 'DELETE']
+
+const ApiModifyForm = ({ workspaceId, domainId }) => {
+  const { data: tables = [] } = useQuery('tables', () => API.getResourcesMysqlTable(workspaceId)
+    .then(res => res)
+    .catch(err => console.log(err)))
+  const [tableName, setTableName] = useState(undefined)
+  const [httpMethod, setHttpMethod] = useState(undefined)
+  const { data: cols = [] } = useQuery('cols', () => API.getResourcesMysqlTableInfo(workspaceId, tableName)
+    .then(res => res)
     .catch(err => console.log(err)))
   const [tab, setTab] = useState('normal')
-  const [workspaceId, setWorkspaceId] = useState(undefined)
+
+  console.log({ cols })
 
   return (
     <TabContext value={tab} >
@@ -70,30 +81,31 @@ const ApiModifyForm = () => {
           <Grid item md={6}>
             <Select
               label="HTTP methods"
-              disabled={isLoading}
-              value={workspaceId}
-              options={workspaces?.map(workspace => ({ value: workspace.id, name: workspace.name })) || []}
-              onChange={(value) => setWorkspaceId(value)}
+              options={httpMethods.map(method => ({ value: method, name: method }))}
+              value={httpMethod}
+              onChange={(value) => setHttpMethod(value)}
             />
           </Grid>
           <Grid item md={6}>
             <Select
               label="Basic API"
-              disabled={isLoading}
-              value={workspaceId}
-              options={workspaces?.map(workspace => ({ value: workspace.id, name: workspace.name })) || []}
-              onChange={(value) => setWorkspaceId(value)}
+              disabled={!workspaceId || !domainId || tables.length === 0}
+              value={tableName}
+              options={tables?.map(table => ({ value: table, name: table }))}
+              onChange={(value) => setTableName(value)}
             />
           </Grid>
         </Grid>
 
-        <ApiForm />
+        <div>
+          <Table />
+        </div>
       </TabPanel>
 
       <TabPanel value="extensible">
         <APIBlock />
         <Grid container sx={{ marginTop: 2 }} spacing={2}>
-          <Grid item md={4}>
+          {/* <Grid item md={4}>
             <Select
               label="From (Table Name)"
               disabled={isLoading}
@@ -119,8 +131,9 @@ const ApiModifyForm = () => {
               options={workspaces?.map(workspace => ({ value: workspace.id, name: workspace.name })) || []}
               onChange={(value) => setWorkspaceId(value)}
             />
-          </Grid>
+          </Grid> */}
         </Grid>
+        <ApiForm />
       </TabPanel>
       <TabPanel value="custom">
         <APIBlock />
@@ -141,6 +154,7 @@ WHERE voucher_user.user_id = :voucher_user.user_id`}
     </TabContext >
   )
 }
+
 
 const ApiForm = () => {
   const { control, register } = useForm();
@@ -222,28 +236,55 @@ const ApiKeySettingSelector = () => {
     .then(response => project(['id', 'name'], response.resources))
     .catch(err => console.log(err)))
   const [workspaceId, setWorkspaceId] = useState(undefined)
+  const { control, register } = useForm();
+  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
+    control,
+    name: "field",
+  })
 
   return (
-    <Grid container padding={3} spacing={2}>
-      <Grid item md={6}>
-        <Select
-          label="Use Key"
-          disabled={isLoading}
-          value={workspaceId}
-          options={workspaces?.map(workspace => ({ value: workspace.id, name: workspace.name })) || []}
-          onChange={(value) => setWorkspaceId(value)}
-        />
+    <>
+      <Grid container padding={3} spacing={2}>
+        <Grid item md={6}>
+          <Select
+            label="Use Key"
+            disabled={isLoading}
+            value={workspaceId}
+            options={workspaces?.map(workspace => ({ value: workspace.id, name: workspace.name })) || []}
+            onChange={(value) => setWorkspaceId(value)}
+          />
+        </Grid>
+        <Grid item md={6}>
+          <Select
+            label="Rule"
+            disabled={isLoading}
+            value={workspaceId}
+            options={workspaces?.map(workspace => ({ value: workspace.id, name: workspace.name })) || []}
+            onChange={(value) => setWorkspaceId(value)}
+          />
+        </Grid>
       </Grid>
-      <Grid item md={6}>
-        <Select
-          label="Rule"
-          disabled={isLoading}
-          value={workspaceId}
-          options={workspaces?.map(workspace => ({ value: workspace.id, name: workspace.name })) || []}
-          onChange={(value) => setWorkspaceId(value)}
-        />
-      </Grid>
-    </Grid>
+      {fields.map((field, index) => (
+        <div key={field.id}>
+          <Select
+            label="Field"
+            disabled={isLoading}
+            value={workspaceId}
+            options={workspaces?.map(workspace => ({ value: workspace.id, name: workspace.name })) || []}
+            onChange={(value) => setWorkspaceId(value)}
+          />
+          <Select
+            label="Field"
+            disabled={isLoading}
+            value={workspaceId}
+            options={workspaces?.map(workspace => ({ value: workspace.id, name: workspace.name })) || []}
+            onChange={(value) => setWorkspaceId(value)}
+          />
+          <Button onClick={remove}>x</Button>
+        </div>
+      ))}
+      <Button onClick={append}>add</Button>
+    </>
   )
 }
 

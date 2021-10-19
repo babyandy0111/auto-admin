@@ -1,3 +1,4 @@
+import { project } from "ramda"
 import { apiGet, apiPost } from "./http"
 
 const apiVersion = "v1"
@@ -6,6 +7,8 @@ const apiUrl = {
   accounts: `${apiVersion}/accounts`,
   logsMetrics: `${apiVersion}/logs/metrics`,
   resourcesMysql: `${apiVersion}/resources/mysql`,
+  resourceMysqlTable: `${apiVersion}/resources/mysql/:id/tables`,
+  resourceMysqlTableInfo: `${apiVersion}/resources/mysql/:id/tables/:table`,
   resourcesSubdomain: `${apiVersion}/resources/subdomain`,
   logs: `${apiVersion}/logs`,
   storages: `${apiVersion}/storage/list-files`,
@@ -24,10 +27,34 @@ const API = {
     return apiGet(apiUrl.logsMetrics, params)
   },
   getResourcesMysql(params) {
-    return apiGet(apiUrl.resourcesMysql, params)
+    const result = apiGet(apiUrl.resourcesMysql, {
+      page: 1,
+      per_page: 20,
+      ...params,
+    })
+
+    return result
+  },
+  getResourcesMysqlTable(id) {
+    const result = apiGet(apiUrl.resourceMysqlTable.replace(":id", id))
+
+    return result
+  },
+  getResourcesMysqlTableInfo(id, tableName) {
+    const result = apiGet(apiUrl.resourceMysqlTableInfo.replace(":id", id).replace(":table", tableName))
+
+    return result
   },
   getResourcesSubdomain(params) {
-    return apiGet(apiUrl.resourcesSubdomain, params)
+    const result = apiGet(apiUrl.resourcesSubdomain, {
+      page: 1,
+      per_page: 20,
+      ...params,
+    })
+      .then(res => project(["id", "name"], res.resources))
+      .catch(err => console.log(err))
+
+    return result
   },
   getLogs(params) {
     return apiGet(apiUrl.logs, params)

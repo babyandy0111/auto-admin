@@ -1,6 +1,6 @@
 {
-  "name": "Log",
+  "name": "basic",
   "version": "1.0.0",
   "private": true,
-  "main": "Log.js"
+  "main": "basic.js"
 }

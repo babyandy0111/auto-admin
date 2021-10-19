@@ -5,8 +5,8 @@ import {
   MenuItem
 } from "@mui/material"
 
-function Select({ disable, label, value = "", options, onChange }) {
-  return <FormControl disable={disable} fullWidth>
+function Select({ disabled, label, value = "", options, onChange }) {
+  return <FormControl disabled={disabled} fullWidth>
     <InputLabel>{label}</InputLabel>
     <MuiSelect
       label={label}
