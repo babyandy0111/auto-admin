@@ -9,7 +9,7 @@ const StorageS3 = (props) => {
     const getStorageListHandle = () => {
         API.getStorage({path: '/'})
             .then(res => {
-                setStorageData(res.data.files);
+                setStorageData(res.files);
             });
     }
 
@@ -28,7 +28,7 @@ const StorageS3 = (props) => {
                     <MUIDataTable
                         title="Log List"
                         data={storageData}
-                        columns={["full_name", "name", "size", "type", "last_updated_at"]}
+                        columns={["full_name", "name", "size", "type", "LastUpdatedAt"]}
                         options={{
                             filterType: "checkbox",
                         }}
