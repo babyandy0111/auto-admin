@@ -27,10 +27,7 @@ import {
   DataTableListPage,
   DomainPage,
   ErdPage,
-  LogPage,
   MarketplacePage,
-  StorageS3Page,
-  TableManagePage,
   UseMarketplacePage,
   VerifyPagePage
 } from "../pages"
@@ -43,7 +40,6 @@ const AppPage = () => {
       rootPath: "/app/api-management",
       leafPaths: [
         { path: "/data-source", component: DataManageSourcePage },
-        { path: "/table-management", component: TableManagePage },
         { path: "/create", component: ApiCreatePage },
         { path: "/api-list", component: ApiListPage },
         { path: "/auth", component: AuthPage },
@@ -67,8 +63,6 @@ const AppPage = () => {
       rootPath: "/app/dashboard",
       leafPaths: [
         { path: "/test", component: DashboardPage },
-        { path: "/storage", component: StorageS3Page },
-        { path: "/log", component: LogPage },
         { path: "/erd", component: ErdPage },
       ]
     },
