@@ -9,6 +9,7 @@ const apiUrl = {
   resourcesMysql: `${apiVersion}/resources/mysql`,
   // get
   logsMetrics: `${apiVersion}/logs/metrics`,
+  resourceDatabaseType: `${apiVersion}/resources/database-type`,
   resourceMysqlTable: `${apiVersion}/resources/mysql/:id/tables`,
   resourceMysqlTableInfo: `${apiVersion}/resources/mysql/:id/tables/:table`,
   resourcesSubdomain: `${apiVersion}/resources/subdomain`,
@@ -62,6 +63,9 @@ const API = {
     })
 
     return result
+  },
+  getResourceDBType() {
+    return apiGet(apiUrl.resourceDatabaseType)
   },
   getResourcesMysqlTable(id) {
     const result = apiGet(apiUrl.resourceMysqlTable.replace(":id", id))
