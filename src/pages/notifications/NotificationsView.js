@@ -7,9 +7,9 @@ import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import tinycolor from "tinycolor2"
-import NotificationCustomComponent from "../../components/basic/Notification"
-import PageTitle from "../../components/basic/PageTitle"
-import Widget from "../../components/basic/Widget"
+import NotificationCustomComponent from "../../components/common/Notification"
+import PageTitle from "../../components/common/PageTitle"
+import Widget from "../../components/common/Widget"
 import { Typography, Button } from "@mui/material"
 
 const CloseButton = ({ closeToast, className }) => (

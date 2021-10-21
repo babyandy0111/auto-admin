@@ -3,10 +3,12 @@ import { apiGet, apiPost } from "./http"
 
 const apiVersion = "v1"
 const apiUrl = {
+  // post
   apiToken: `${apiVersion}/api-token`,
   accounts: `${apiVersion}/accounts`,
-  logsMetrics: `${apiVersion}/logs/metrics`,
   resourcesMysql: `${apiVersion}/resources/mysql`,
+  // get
+  logsMetrics: `${apiVersion}/logs/metrics`,
   resourceMysqlTable: `${apiVersion}/resources/mysql/:id/tables`,
   resourceMysqlTableInfo: `${apiVersion}/resources/mysql/:id/tables/:table`,
   resourcesSubdomain: `${apiVersion}/resources/subdomain`,
@@ -20,7 +22,33 @@ const API = {
     return apiPost(apiUrl.apiToken, params)
   },
   postAccount(params) {
-    return apiPost(apiUrl.accounts, params)
+    return apiPost(apiUrl.accounts, {
+      info: {
+        database_name: "abc",
+        endpoint: "127.0.0.1",
+        password: "123456",
+        port: "3306",
+        username: "wen",
+      },
+      is_self_connect: false,
+      name: "workspace name",
+    })
+  },
+  postResourceMysql({ dataSrcType, databaseName, endpoint, password, port, username, workspace }) {
+    return apiPost(apiUrl.resourcesMysql, {
+      name: workspace,
+      is_self_connect: dataSrcType === "connect",
+      info:
+        dataSrcType === "connect"
+          ? {
+              database_name: databaseName,
+              endpoint,
+              password,
+              port,
+              username,
+            }
+          : undefined,
+    })
   },
   // get
   getLogsMetrics(params) {

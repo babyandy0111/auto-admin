@@ -7,10 +7,10 @@ import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs"
 import { toast, ToastContainer } from "react-toastify"
 // styles
 import "react-toastify/dist/ReactToastify.css"
-import Notification from "../../components/basic/Notification"
-import PageTitle from "../../components/basic/PageTitle/PageTitle"
+import Notification from "../../components/common/Notification"
+import PageTitle from "../../components/common/PageTitle/PageTitle"
 // components
-import Widget from "../../components/basic/Widget/Widget"
+import Widget from "../../components/common/Widget/Widget"
 import useStyles from "./styles"
 
 const positions = [

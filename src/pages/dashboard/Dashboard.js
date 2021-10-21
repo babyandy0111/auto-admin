@@ -27,10 +27,10 @@ import useStyles from "./styles"
 
 // components
 import mock from "./mock"
-import Widget from "../../components/basic/Widget"
-import PageTitle from "../../components/basic/PageTitle"
+import Widget from "../../components/common/Widget"
+import PageTitle from "../../components/common/PageTitle"
 import { Typography } from "@mui/material"
-import Dot from "../../components/basic/Sidebar/components/Dot"
+import Dot from "../../components/common/Sidebar/components/Dot"
 import Table from "./components/Table/Table"
 import BigStat from "./components/BigStat/BigStat"
 
