@@ -10,5 +10,6 @@ export {
   StarBorder,
   Code as CodeIcon,
   Api as ApiIcon,
-  Add as AddIcon
+  Add as AddIcon,
+  Storage as StorageIcon
 } from "@mui/icons-material"
