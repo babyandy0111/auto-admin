@@ -3,7 +3,7 @@ import { useQuery } from 'react-query'
 import { project } from 'ramda'
 import { Paper, Grid, Tab, TextField, Button } from '@mui/material'
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { Select, Table } from '../components/basic'
+import { Select, Table } from '../components/common'
 import API from '../server/api'
 import { useForm, useFieldArray } from 'react-hook-form'
 

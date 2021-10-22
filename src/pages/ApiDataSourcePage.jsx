@@ -2,7 +2,7 @@ import { Alert, Button, Grid, Paper, TextField } from '@mui/material'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useQuery } from 'react-query'
-import { Select } from '../components/basic'
+import { Select } from '../components/common'
 import API from '../server/api'
 
 const ApiDataSourcePage = () => {

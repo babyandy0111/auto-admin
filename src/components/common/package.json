@@ -1,6 +1,6 @@
 {
-  "name": "basic",
+  "name": "common",
   "version": "1.0.0",
   "private": true,
-  "main": "basic.js"
+  "main": "common.js"
 }
