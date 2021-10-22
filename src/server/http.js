@@ -1,7 +1,8 @@
 import qs from "querystringify"
 import ky from "ky"
 
-const $http = ky.create({ prefixUrl: "https://app-api.codegenapps.com/" }).extend({
+const apiVersion = "v1"
+const $http = ky.create({ prefixUrl: `https://app-api.codegenapps.com/${apiVersion}/` }).extend({
   hooks: {
     beforeRequest: [
       request => {
@@ -36,4 +37,8 @@ function apiPost(url, params) {
   return $http.post(url, { json: params }).json()
 }
 
-export { apiGet, apiPost }
+function apiDelete(url, params) {
+  return $http.delete(url, { json: params }).json()
+}
+
+export { apiGet, apiPost, apiDelete }

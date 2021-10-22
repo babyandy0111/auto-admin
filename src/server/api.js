@@ -1,29 +1,14 @@
 import { project } from "ramda"
-import { apiGet, apiPost } from "./http"
-
-const apiVersion = "v1"
-const apiUrl = {
-  // post
-  apiToken: `${apiVersion}/api-token`,
-  accounts: `${apiVersion}/accounts`,
-  resourcesMysql: `${apiVersion}/resources/mysql`,
-  // get
-  logsMetrics: `${apiVersion}/logs/metrics`,
-  resourceDatabaseType: `${apiVersion}/resources/database-type`,
-  resourceMysqlTable: `${apiVersion}/resources/mysql/:id/tables`,
-  resourceMysqlTableInfo: `${apiVersion}/resources/mysql/:id/tables/:table`,
-  resourcesSubdomain: `${apiVersion}/resources/subdomain`,
-  logs: `${apiVersion}/logs`,
-  storages: `${apiVersion}/storage/list-files`,
-}
+import { apiGet, apiPost, apiDelete } from "./http"
+import day from "dayjs"
 
 const API = {
   // post
   postLogin(params) {
-    return apiPost(apiUrl.apiToken, params)
+    return apiPost("api-token", params)
   },
   postAccount(params) {
-    return apiPost(apiUrl.accounts, {
+    return apiPost("accounts", {
       info: {
         database_name: "abc",
         endpoint: "127.0.0.1",
@@ -36,7 +21,7 @@ const API = {
     })
   },
   postResourceMysql({ dataSrcType, databaseName, endpoint, password, port, username, workspace }) {
-    return apiPost(apiUrl.resourcesMysql, {
+    return apiPost("resources/mysql", {
       name: workspace,
       is_self_connect: dataSrcType === "connect",
       info:
@@ -53,10 +38,10 @@ const API = {
   },
   // get
   getLogsMetrics(params) {
-    return apiGet(apiUrl.logsMetrics, params)
+    return apiGet("logs/metrics", params)
   },
   getResourcesMysql(params) {
-    const result = apiGet(apiUrl.resourcesMysql, {
+    const result = apiGet("resources/mysql", {
       page: 1,
       per_page: 20,
       ...params,
@@ -65,20 +50,36 @@ const API = {
     return result
   },
   getResourceDBType() {
-    return apiGet(apiUrl.resourceDatabaseType)
+    return apiGet("resources/database-type")
+  },
+  getResourceMysql(params) {
+    return apiGet("resources/mysql", {
+      page: 1,
+      per_page: 20,
+      ...params,
+    }).then(res =>
+      res.resources.map(v => ({
+        id: v.id,
+        name: v.name,
+        type: v.resource_type,
+        createdAt: day(v.created_at).format("YYYY-MM-DD HH:mm:ss"),
+        updatedAt: day(v.updated_at).format("YYYY-MM-DD HH:mm:ss"),
+        isSelfConnect: v.is_self_connect,
+      })),
+    )
   },
   getResourcesMysqlTable(id) {
-    const result = apiGet(apiUrl.resourceMysqlTable.replace(":id", id))
+    const result = apiGet(`resources/mysql/${id}/tables`)
 
     return result
   },
   getResourcesMysqlTableInfo(id, tableName) {
-    const result = apiGet(apiUrl.resourceMysqlTableInfo.replace(":id", id).replace(":table", tableName))
+    const result = apiGet(`resources/mysql/${id}/tables/${tableName}`)
 
     return result
   },
   getResourcesSubdomain(params) {
-    const result = apiGet(apiUrl.resourcesSubdomain, {
+    const result = apiGet("resources/subdomain", {
       page: 1,
       per_page: 20,
       ...params,
@@ -89,10 +90,14 @@ const API = {
     return result
   },
   getLogs(params) {
-    return apiGet(apiUrl.logs, params)
+    return apiGet("logs", params)
   },
   getStorage(params) {
-    return apiGet(apiUrl.storages, params)
+    return apiGet("storage/list-files", params)
+  },
+  // delete
+  deleteResource(id) {
+    return apiDelete(`resources/mysql/${id}`)
   },
 }
 

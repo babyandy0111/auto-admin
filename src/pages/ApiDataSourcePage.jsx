@@ -2,18 +2,26 @@ import { Alert, Button, Grid, Paper, TextField } from '@mui/material'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useQuery } from 'react-query'
-import { Select } from '../components/common'
+import { Select, DataSourceTable } from '../components/common'
 import API from '../server/api'
 
 const ApiDataSourcePage = () => {
   const { isLoading, data: databaseTypes } = useQuery('databaseTypes', API.getResourceDBType)
+  const { data: dataResource, refetch } = useQuery('dataResource', API.getResourceMysql)
 
   return <>
-    {!isLoading && <WorkSpaceCreator databaseTypes={databaseTypes || []} />}
+    <Grid container spacing={2}>
+      <Grid item md={12}>
+        {!isLoading && <WorkSpaceCreator databaseTypes={databaseTypes || []} onRefetch={refetch} />}
+      </Grid>
+      <Grid item md={12}>
+        <DataSourceTable data={dataResource || []} onDelete={id => API.deleteResource(id).then(refetch)} />
+      </Grid>
+    </Grid>
   </>
 }
 
-const WorkSpaceCreator = ({ databaseTypes }) => {
+const WorkSpaceCreator = ({ databaseTypes, onRefetch }) => {
   const [dataSrcType, setDataSrcType] = useState('new')
   const [isAlertShow, setIsAlertShow] = useState(false)
 
@@ -33,6 +41,7 @@ const WorkSpaceCreator = ({ databaseTypes }) => {
     API.postResourceMysql({ ...value, dataSrcType })
       .then(() => {
         setIsAlertShow(true)
+        onRefetch?.()
         reset()
       })
       .finally(() => setTimeout(() => setIsAlertShow(false), 3000))
