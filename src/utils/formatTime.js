@@ -1,32 +1,32 @@
 import { format, formatDistanceToNow } from "date-fns"
-import moment from "moment"
+import day from "dayjs"
 
-const fDate = (date) => {
+const fDate = date => {
   return format(new Date(date), "dd MMMM yyyy")
 }
 
-const fDateTime = (date) => {
+const fDateTime = date => {
   return format(new Date(date), "dd MMM yyyy HH:mm")
 }
 
-const fDateTimeSuffix = (date) => {
+const fDateTimeSuffix = date => {
   return format(new Date(date), "dd/MM/yyyy hh:mm p")
 }
 
-const fToNow = (date) => {
+const fToNow = date => {
   return formatDistanceToNow(new Date(date), {
     addSuffix: true,
   })
 }
 
-const diffDays = (days) => {
+const diffDays = days => {
   let result = new Date()
   result.setDate(result.getDate() - days)
   return result
 }
 
-const getUTCDate = (date) => {
-  return moment(new Date(date)).utc().format("YYYY-MM-DDThh:mm:ss[Z]")
+const getUTCDate = date => {
+  return day(new Date(date)).utc().format("YYYY-MM-DDThh:mm:ss[Z]")
 }
 
 export { fDate, fDateTime, fDateTimeSuffix, fToNow, diffDays, getUTCDate }

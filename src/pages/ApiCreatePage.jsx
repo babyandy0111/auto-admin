@@ -157,8 +157,12 @@ WHERE voucher_user.user_id = :voucher_user.user_id`}
 
 
 const ApiForm = () => {
-  const { control, register } = useForm();
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
+  const { control,
+    // register 
+  } = useForm();
+  const { fields, append, remove,
+    // prepend, swap, move, insert 
+  } = useFieldArray({
     control,
     name: "field",
   })
@@ -236,8 +240,12 @@ const ApiKeySettingSelector = () => {
     .then(response => project(['id', 'name'], response.resources))
     .catch(err => console.log(err)))
   const [workspaceId, setWorkspaceId] = useState(undefined)
-  const { control, register } = useForm();
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
+  const { control,
+    // register 
+  } = useForm();
+  const { fields, append, remove,
+    //  prepend, swap, move, insert
+  } = useFieldArray({
     control,
     name: "field",
   })
