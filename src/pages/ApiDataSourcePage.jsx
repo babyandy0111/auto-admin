@@ -42,13 +42,18 @@ const WorkSpaceCreator = ({ databaseTypes }) => {
     <Paper>
       <Grid container columnSpacing={2} padding={3}>
         <Grid item md={2}>
-          <Select label="Add Data Source" variant="filled" value={dataSrcType} onChange={value => setDataSrcType(value)} options={[{
-            value: "new",
-            name: 'Create'
-          }, {
-            value: "existed",
-            name: 'Connect'
-          }]} />
+          <Select
+            label="Add Data Source" variant="filled"
+            options={[{
+              value: "new",
+              name: 'Create'
+            }, {
+              value: "existed",
+              name: 'Connect'
+            }]}
+            value={dataSrcType}
+            onChange={e => setDataSrcType(e.target.value)}
+          />
         </Grid>
         <Grid item md={4}>
           <TextField  {...register("workspace", { required: true })} label="Workspace" fullWidth />
