@@ -63,7 +63,7 @@ function loginUser(dispatch, companyName, email, password, history, setIsLoading
         dispatch({ type: "LOGIN_SUCCESS" })
         setError(null)
         localStorage.setItem("id_token", res.token)
-        history.push("/app/dashboard")
+        history.push("/app/api-management/data-source")
       })
       .catch(e => console.log(e))
       .finally(() => setIsLoading(false))
