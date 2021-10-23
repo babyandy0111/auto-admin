@@ -1,13 +1,15 @@
 import { Alert, Button, Grid, Paper, TextField } from '@mui/material'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
-import { Select, DataSourceTable } from '../components/common'
+import { DataSourceTable, Select } from '../components/common'
 import API from '../server/api'
 
 const ApiDataSourcePage = () => {
   const { isLoading, data: databaseTypes } = useQuery('databaseTypes', API.getResourceDBType)
   const { data: dataResource, refetch } = useQuery('dataResource', API.getResourceMysql)
+  const { t } = useTranslation(["api"])
 
   return <>
     <Grid container spacing={2}>
@@ -15,16 +17,32 @@ const ApiDataSourcePage = () => {
         {!isLoading && <WorkSpaceCreator databaseTypes={databaseTypes || []} onRefetch={refetch} />}
       </Grid>
       <Grid item md={12}>
-        <DataSourceTable data={dataResource || []} onDelete={id => API.deleteResource(id).then(refetch)} />
+        <DataSourceTable columns={
+          [
+            {
+              title: t('table.workspaceName'),
+            },
+            {
+              title: t('table.databaseType'),
+            },
+            {
+              title: t('table.createTime'),
+            },
+            {
+              title: t('table.updateTime'),
+            },
+            {
+              title: t('table.selfConnect'),
+            }
+          ]
+        } data={dataResource || []} onDelete={id => API.deleteResource(id).then(refetch)} />
       </Grid>
     </Grid>
   </>
 }
 
 const WorkSpaceCreator = ({ databaseTypes, onRefetch }) => {
-  const [dataSrcType, setDataSrcType] = useState('new')
-  const [isAlertShow, setIsAlertShow] = useState(false)
-
+  const { t } = useTranslation(["api", "common"])
   const { register, control, handleSubmit, reset } = useForm({
     defaultValues: {
       workspace: "",
@@ -36,6 +54,8 @@ const WorkSpaceCreator = ({ databaseTypes, onRefetch }) => {
       password: "",
     }
   })
+  const [dataSrcType, setDataSrcType] = useState('new')
+  const [isAlertShow, setIsAlertShow] = useState(false)
 
   const submit = handleSubmit((value) =>
     API.postResourceMysql({ ...value, dataSrcType })
@@ -52,32 +72,33 @@ const WorkSpaceCreator = ({ databaseTypes, onRefetch }) => {
       <Grid container columnSpacing={2} padding={3}>
         <Grid item md={2}>
           <Select
-            label="Add Data Source" variant="filled"
+            variant="filled"
+            label={t('label.addDataSource')}
             options={[{
               value: "new",
-              name: 'Create'
+              name: t('interface.create')
             }, {
               value: "existed",
-              name: 'Connect'
+              name: t('interface.connect')
             }]}
             value={dataSrcType}
             onChange={e => setDataSrcType(e.target.value)}
           />
         </Grid>
         <Grid item md={4}>
-          <TextField  {...register("workspace", { required: true })} label="Workspace" fullWidth />
+          <TextField  {...register("workspace", { required: true })} label={t('label.workspace')} fullWidth />
         </Grid>
         <Grid item md={1}>
           <Button onClick={submit} sx={{ height: "100%" }} variant="contained" size="large" fullWidth>
-            {dataSrcType === 'new' && 'Generate'}
-            {dataSrcType === 'existed' && 'Connect'}
+            {dataSrcType === 'new' && t('interface.generate')}
+            {dataSrcType === 'existed' && t('interface.connect')}
           </Button>
         </Grid>
 
         {dataSrcType === 'existed' && (
           <Grid item container sx={{ paddingTop: 2 }} columnSpacing={2} md={12}>
             <Grid item md={2}>
-              <TextField {...register("databaseName", { required: true })} label="Database Name" fullWidth />
+              <TextField {...register("databaseName", { required: true })} label={t('label.databaseName')} fullWidth />
             </Grid>
             <Grid item md={2}>
               <Controller
@@ -85,8 +106,7 @@ const WorkSpaceCreator = ({ databaseTypes, onRefetch }) => {
                 name="databaseType"
                 render={({ field: { value, onChange } }) => (
                   <Select
-                    disabled
-                    label="Type" variant="filled"
+                    label={t('label.databaseType')} variant="filled"
                     options={databaseTypes.map(type => ({ value: type.key, name: type.name }))}
                     value={value}
                     onChange={onChange}
@@ -110,7 +130,7 @@ const WorkSpaceCreator = ({ databaseTypes, onRefetch }) => {
         )}
       </Grid>
 
-      {isAlertShow && <Alert severity="success">Success</Alert>}
+      {isAlertShow && <Alert severity="success">{t("common:status.success")}</Alert>}
     </Paper>
   )
 }

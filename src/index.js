@@ -8,6 +8,7 @@ import { UserProvider } from "./contexts/UserContext"
 import * as serviceWorker from "./serviceWorker"
 import Themes from "./themes"
 import { QueryClient, QueryClientProvider } from "react-query"
+import "./i18n"
 
 const queryClient = new QueryClient()
 

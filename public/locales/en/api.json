@@ -1,0 +1,28 @@
+{
+  "heading": {
+    "workspaceDelete": "Delete Workspace"
+  },
+  "text": {
+    "workspaceDeleteWarming": "Are you sure you want to delete？"
+  },
+  "label": {
+    "addDataSource": "Add Data Source",
+    "workspace": "Workspace",
+    "databaseName": "Database Name",
+    "databaseType": "Type"
+  },
+  "placeholder": {},
+  "interface": {
+    "create": "Create",
+    "connect": "Connect",
+    "generate": "Generate",
+    "delete": "Delete"
+  },
+  "table": {
+    "workspaceName": "WORKSPACE NAME",
+    "databaseType": "TYPE",
+    "createTime": "CREATE TIME",
+    "updateTime": "UPDATE TIME",
+    "selfConnect": "SELF CONNECT"
+  }
+}

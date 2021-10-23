@@ -11,31 +11,14 @@ import {
   Box,
 } from '@mui/material'
 import Modal from './Modal'
+import { useTranslation } from 'react-i18next'
 
 export default function BasicTable({
   data,
-  columns = [
-    {
-      title: "ID",
-    },
-    {
-      title: "WORKSPACE NAME",
-    },
-    {
-      title: 'TYPE',
-    },
-    {
-      title: 'CREATE TIME',
-    },
-    {
-      title: 'UPDATE TIME',
-    },
-    {
-      title: 'SELF CONNECT',
-    }
-  ],
+  columns,
   onDelete
 }) {
+  const { t } = useTranslation(["api"])
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -48,23 +31,22 @@ export default function BasicTable({
         <TableBody>
           {data.map(row => (
             <TableRow key={row.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-              <TableCell component="th" scope="row">{row.id}</TableCell>
-              <TableCell align="right">{row.name}</TableCell>
+              <TableCell component="th" scope="row">{row.name}</TableCell>
               <TableCell align="right">{row.type}</TableCell>
               <TableCell align="right">{row.createdAt}</TableCell>
               <TableCell align="right">{row.updatedAt}</TableCell>
               <TableCell align="right">{row.isSelfConnect ? 'YES' : 'NO'}</TableCell>
               <TableCell align="right">
-                <Modal renderOpenButton={(onOpen) => <Button variant="contained" color="error" onClick={onOpen}>Delete</Button>}>
+                <Modal renderOpenButton={(onOpen) => <Button variant="contained" color="error" onClick={onOpen}>{t('interface.delete')}</Button>}>
                   <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Delete Workspace
+                    {t('heading.workspaceDelete')}
                   </Typography>
                   <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    Are you sure you want to delete？
+                    {t('text.workspaceDeleteWarming')}
                   </Typography>
 
                   <Box sx={{ textAlign: 'right', mt: 2 }}>
-                    <Button variant="outlined" color="error" onClick={() => onDelete?.(row.id)}>Delete</Button>
+                    <Button variant="outlined" color="error" onClick={() => onDelete?.(row.id)}>{t('interface.delete')}</Button>
                   </Box>
                 </Modal>
               </TableCell>

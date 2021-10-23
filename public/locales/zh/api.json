@@ -1,0 +1,28 @@
+{
+  "heading": {
+    "workspaceDelete": "刪除工作空間"
+  },
+  "text": {
+    "workspaceDeleteWarming": "你確定要刪除嗎？"
+  },
+  "label": {
+    "addDataSource": "新增工作空間",
+    "workspace": "工作空間",
+    "databaseName": "資料庫名稱",
+    "databaseType": "資料庫"
+  },
+  "placeholder": {},
+  "interface": {
+    "create": "建立",
+    "connect": "連結",
+    "generate": "產生",
+    "delete": "刪除"
+  },
+  "table": {
+    "workspaceName": "工作空間名稱",
+    "databaseType": "資料庫",
+    "createTime": "建立時間",
+    "updateTime": "更新時間",
+    "selfConnect": "連結個人資料庫"
+  }
+}
