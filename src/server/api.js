@@ -20,6 +20,15 @@ const API = {
       name: "workspace name",
     })
   },
+  postMysqlPing({ databaseName, endpoint, password, port, username }) {
+    return apiPost("mysql/ping", {
+      database_name: databaseName,
+      endpoint,
+      port,
+      username,
+      password,
+    })
+  },
   postResourceMysql({ dataSrcType, databaseName, endpoint, password, port, username, workspace }) {
     return apiPost("resources/mysql", {
       name: workspace,

@@ -1,5 +1,7 @@
+import { LoadingButton } from '@mui/lab'
 import { Alert, Button, Grid, Paper, TextField } from '@mui/material'
-import { useState } from 'react'
+import { pick } from 'ramda'
+import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
@@ -32,7 +34,7 @@ const ApiDataSourcePage = () => {
               title: t('table.updateTime'),
             },
             {
-              title: t('table.selfConnect'),
+              title: t('table.isSelfConnect'),
             }
           ]
         } data={dataResource || []} onDelete={id => API.deleteResource(id).then(refetch)} />
@@ -43,7 +45,7 @@ const ApiDataSourcePage = () => {
 
 const WorkSpaceCreator = ({ databaseTypes, onRefetch }) => {
   const { t } = useTranslation(["api", "common"])
-  const { register, control, handleSubmit, reset } = useForm({
+  const { register, control, handleSubmit, watch, getValues, reset } = useForm({
     defaultValues: {
       workspace: "",
       databaseName: "",
@@ -56,6 +58,32 @@ const WorkSpaceCreator = ({ databaseTypes, onRefetch }) => {
   })
   const [dataSrcType, setDataSrcType] = useState('new')
   const [isAlertShow, setIsAlertShow] = useState(false)
+  const [testingStatus, setTestingStatus] = useState('idle')
+
+  useEffect(() => {
+    const subscription = watch((_, { name: filedName }) => {
+      const connectDBFields = ["databaseName", "endpoint", "port", "username", "password"]
+      if (connectDBFields.includes(filedName)) {
+        setTestingStatus('idle')
+      }
+    })
+    return () => subscription.unsubscribe()
+  }, [watch])
+
+  const handleTest = () => {
+    setTestingStatus('loading')
+    API.postMysqlPing(pick([
+      "databaseName",
+      "endpoint",
+      "port",
+      "username",
+      "password",
+    ], getValues()))
+      .then(res => {
+        setTestingStatus(res.status ? 'success' : 'fail')
+      })
+      .catch(() => setTestingStatus('fail'))
+  }
 
   const submit = handleSubmit((value) =>
     API.postResourceMysql({ ...value, dataSrcType })
@@ -70,29 +98,38 @@ const WorkSpaceCreator = ({ databaseTypes, onRefetch }) => {
   return (
     <Paper>
       <Grid container columnSpacing={2} padding={3}>
+        <Grid item md={4}>
+          <TextField  {...register("workspace", { required: true })} label={t('label.workspace')} fullWidth />
+        </Grid>
         <Grid item md={2}>
           <Select
             variant="filled"
-            label={t('label.addDataSource')}
+            label={t('label.dataSourceAdd')}
             options={[{
               value: "new",
-              name: t('interface.create')
+              name: t('interface.createDatabase')
             }, {
               value: "existed",
-              name: t('interface.connect')
+              name: t('interface.connectDatabase')
             }]}
             value={dataSrcType}
             onChange={e => setDataSrcType(e.target.value)}
           />
         </Grid>
-        <Grid item md={4}>
-          <TextField  {...register("workspace", { required: true })} label={t('label.workspace')} fullWidth />
-        </Grid>
         <Grid item md={1}>
-          <Button onClick={submit} sx={{ height: "100%" }} variant="contained" size="large" fullWidth>
-            {dataSrcType === 'new' && t('interface.generate')}
-            {dataSrcType === 'existed' && t('interface.connect')}
-          </Button>
+          {dataSrcType === "existed" && testingStatus !== 'success' && (
+            <LoadingButton
+              variant="outlined" size="large" fullWidth
+              color={testingStatus === 'fail' ? 'error' : undefined}
+              loading={testingStatus === "loading"}
+              onClick={handleTest}
+              sx={{ height: "100%" }}
+            >
+              {t('interface.test')}
+            </LoadingButton>)}
+          {(dataSrcType === "new" || (dataSrcType === "existed" && testingStatus === 'success')) && <Button onClick={submit} sx={{ height: "100%" }} variant="contained" size="large" fullWidth>
+            {t('interface.create')}
+          </Button>}
         </Grid>
 
         {dataSrcType === 'existed' && (
