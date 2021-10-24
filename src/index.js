@@ -1,6 +1,6 @@
 import { CssBaseline } from "@mui/material"
 import { ThemeProvider } from "@material-ui/styles"
-import React from "react"
+import React, { Suspense } from "react"
 import ReactDOM from "react-dom"
 import App from "./App"
 import { LayoutProvider } from "./contexts/LayoutContext"
@@ -8,6 +8,7 @@ import { UserProvider } from "./contexts/UserContext"
 import * as serviceWorker from "./serviceWorker"
 import Themes from "./themes"
 import { QueryClient, QueryClientProvider } from "react-query"
+import { CircularProgress } from "@mui/material"
 import "./i18n"
 
 const queryClient = new QueryClient()
@@ -18,7 +19,9 @@ ReactDOM.render(
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={Themes.default}>
           <CssBaseline />
-          <App />
+          <Suspense fallback={<CircularProgress />}>
+            <App />
+          </Suspense>
         </ThemeProvider>
       </QueryClientProvider>
     </UserProvider>
