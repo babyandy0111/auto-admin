@@ -40,23 +40,30 @@ export default function BasicTable({
               <TableCell align="right">{row.isSelfConnect ? 'YES' : 'NO'}</TableCell>
               <TableCell align="right">
                 {row.isSelfConnect && <Modal renderOpenButton={(onOpen) => <Button component="span" variant="contained" onClick={onOpen}>{t('interface.edit')}</Button>}>
-                  <Typography id="modal-modal-title" variant="h6" component="h2">
-                    {t('heading.workspaceEdit', { name: row.name })}
-                  </Typography>
-                  <WorkspaceEditForm id={row.id} onRefetch={onRefetch} />
+                  {(onClose) => {
+                    return <>
+                      <Typography id="modal-modal-title" variant="h6" component="h2">
+                        {t('heading.workspaceEdit', { name: row.name })}
+                      </Typography>
+                      <WorkspaceEditForm id={row.id} onRefetch={onRefetch} onClose={onClose} />
+                    </>
+                  }}
                 </Modal>}
 
                 <Modal renderOpenButton={(onOpen) => <Button sx={{ ml: 1 }} component="span" variant="contained" color="error" onClick={onOpen}>{t('interface.delete')}</Button>}>
-                  <Typography id="modal-modal-title" variant="h6" component="h2">
-                    {t('heading.workspaceDelete')}
-                  </Typography>
-                  <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    {t('text.workspaceDeleteWarming')}
-                  </Typography>
+                  {(onClose) => <>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                      {t('heading.workspaceDelete')}
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                      {t('text.workspaceDeleteWarming')}
+                    </Typography>
 
-                  <Box sx={{ textAlign: 'right', mt: 2 }}>
-                    <Button variant="outlined" color="error" onClick={() => onDelete?.(row.id)}>{t('interface.delete')}</Button>
-                  </Box>
+                    <Box sx={{ textAlign: 'right', mt: 2 }}>
+                      <Button variant="contained" onClick={onClose}>{t('interface.cancel')}</Button>
+                      <Button variant="outlined" sx={{ ml: 1 }} color="error" onClick={() => onDelete?.(row.id)}>{t('interface.delete')}</Button>
+                    </Box>
+                  </>}
                 </Modal>
               </TableCell>
             </TableRow>
@@ -67,7 +74,7 @@ export default function BasicTable({
   )
 }
 
-const WorkspaceEditForm = ({ id, onRefetch }) => {
+const WorkspaceEditForm = ({ id, onRefetch, onClose }) => {
   const { t } = useTranslation(["api"])
   const { register, handleSubmit, watch, getValues, reset } = useForm({
     defaultValues: {
@@ -84,6 +91,7 @@ const WorkspaceEditForm = ({ id, onRefetch }) => {
     API.updateResourceMysql(id, value)
       .then(() => {
         onRefetch?.()
+        onClose?.()
         reset()
       })
       .catch(() => { })

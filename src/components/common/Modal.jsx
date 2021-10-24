@@ -32,7 +32,7 @@ export default function BasicModal({ renderOpenButton, children }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          {children}
+          {children(handleClose)}
         </Box>
       </Modal>
     </>
