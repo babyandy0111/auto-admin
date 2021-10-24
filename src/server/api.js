@@ -1,5 +1,5 @@
 import { project } from "ramda"
-import { apiGet, apiPost, apiDelete } from "./http"
+import { apiGet, apiPost, apiPut, apiDelete } from "./http"
 import day from "dayjs"
 
 const API = {
@@ -32,9 +32,9 @@ const API = {
   postResourceMysql({ dataSrcType, databaseName, endpoint, password, port, username, workspace }) {
     return apiPost("resources/mysql", {
       name: workspace,
-      is_self_connect: dataSrcType === "connect",
+      is_self_connect: dataSrcType === "existed",
       info:
-        dataSrcType === "connect"
+        dataSrcType === "existed"
           ? {
               database_name: databaseName,
               endpoint,
@@ -104,8 +104,20 @@ const API = {
   getStorage(params) {
     return apiGet("storage/list-files", params)
   },
+  // update
+  updateResourceMysql(id, { databaseName, endpoint, port, username, password }) {
+    return apiPut(`resources/mysql/${id}`, {
+      info: {
+        database_name: databaseName,
+        endpoint,
+        password,
+        port,
+        username,
+      },
+    })
+  },
   // delete
-  deleteResource(id) {
+  deleteResourceMysql(id) {
     return apiDelete(`resources/mysql/${id}`)
   },
 }

@@ -1,6 +1,7 @@
 {
   "heading": {
-    "workspaceDelete": "刪除工作空間"
+    "workspaceDelete": "刪除工作空間",
+    "workspaceEdit": "編輯工作空間 {{name}}"
   },
   "text": {
     "workspaceDeleteWarming": "你確定要刪除嗎？"
@@ -16,6 +17,8 @@
     "createDatabase": "建立新資料庫",
     "connectDatabase": "連結舊資料庫",
     "create": "建立",
+    "edit": "編輯",
+    "update": "更新",
     "delete": "刪除",
     "test": "測試"
   },

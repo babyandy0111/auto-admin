@@ -1,11 +1,11 @@
 import { LoadingButton } from '@mui/lab'
 import { Alert, Button, Grid, Paper, TextField } from '@mui/material'
-import { pick } from 'ramda'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
 import { DataSourceTable, Select } from '../components/common'
+import { useDatabaseTest } from '../hooks'
 import API from '../server/api'
 
 const ApiDataSourcePage = () => {
@@ -19,25 +19,30 @@ const ApiDataSourcePage = () => {
         {!isLoading && <WorkSpaceCreator databaseTypes={databaseTypes || []} onRefetch={refetch} />}
       </Grid>
       <Grid item md={12}>
-        <DataSourceTable columns={
-          [
-            {
-              title: t('table.workspaceName'),
-            },
-            {
-              title: t('table.databaseType'),
-            },
-            {
-              title: t('table.createTime'),
-            },
-            {
-              title: t('table.updateTime'),
-            },
-            {
-              title: t('table.isSelfConnect'),
-            }
-          ]
-        } data={dataResource || []} onDelete={id => API.deleteResource(id).then(refetch)} />
+        <DataSourceTable
+          columns={
+            [
+              {
+                title: t('table.workspaceName'),
+              },
+              {
+                title: t('table.databaseType'),
+              },
+              {
+                title: t('table.createTime'),
+              },
+              {
+                title: t('table.updateTime'),
+              },
+              {
+                title: t('table.isSelfConnect'),
+              }
+            ]
+          }
+          data={dataResource || []}
+          onRefetch={refetch}
+          onDelete={id => API.deleteResourceMysql(id).then(refetch)}
+        />
       </Grid>
     </Grid>
   </>
@@ -47,9 +52,7 @@ const WorkSpaceCreator = ({ databaseTypes, onRefetch }) => {
   const { t } = useTranslation(["api", "common"])
   const { register, control, handleSubmit, watch, getValues, reset } = useForm({
     defaultValues: {
-      workspace: "",
       databaseName: "",
-      databaseType: databaseTypes[0]?.key || '',
       endpoint: "",
       port: "",
       username: "",
@@ -58,32 +61,8 @@ const WorkSpaceCreator = ({ databaseTypes, onRefetch }) => {
   })
   const [dataSrcType, setDataSrcType] = useState('new')
   const [isAlertShow, setIsAlertShow] = useState(false)
-  const [testingStatus, setTestingStatus] = useState('idle')
 
-  useEffect(() => {
-    const subscription = watch((_, { name: filedName }) => {
-      const connectDBFields = ["databaseName", "endpoint", "port", "username", "password"]
-      if (connectDBFields.includes(filedName)) {
-        setTestingStatus('idle')
-      }
-    })
-    return () => subscription.unsubscribe()
-  }, [watch])
-
-  const handleTest = () => {
-    setTestingStatus('loading')
-    API.postMysqlPing(pick([
-      "databaseName",
-      "endpoint",
-      "port",
-      "username",
-      "password",
-    ], getValues()))
-      .then(res => {
-        setTestingStatus(res.status ? 'success' : 'fail')
-      })
-      .catch(() => setTestingStatus('fail'))
-  }
+  const { test, status } = useDatabaseTest(getValues, watch)
 
   const submit = handleSubmit((value) =>
     API.postResourceMysql({ ...value, dataSrcType })
@@ -117,17 +96,18 @@ const WorkSpaceCreator = ({ databaseTypes, onRefetch }) => {
           />
         </Grid>
         <Grid item md={1}>
-          {dataSrcType === "existed" && testingStatus !== 'success' && (
+          {dataSrcType === "existed" && status !== 'success' && (
             <LoadingButton
               variant="outlined" size="large" fullWidth
-              color={testingStatus === 'fail' ? 'error' : undefined}
-              loading={testingStatus === "loading"}
-              onClick={handleTest}
+              color={status === 'fail' ? 'error' : undefined}
+              loading={status === "loading"}
+              onClick={test}
               sx={{ height: "100%" }}
             >
               {t('interface.test')}
-            </LoadingButton>)}
-          {(dataSrcType === "new" || (dataSrcType === "existed" && testingStatus === 'success')) && <Button onClick={submit} sx={{ height: "100%" }} variant="contained" size="large" fullWidth>
+            </LoadingButton>
+          )}
+          {(dataSrcType === "new" || (dataSrcType === "existed" && status === 'success')) && <Button onClick={submit} sx={{ height: "100%" }} variant="contained" size="large" fullWidth>
             {t('interface.create')}
           </Button>}
         </Grid>

@@ -22,7 +22,7 @@ export default function BasicModal({ renderOpenButton, children }) {
   const handleClose = () => setOpen(false)
 
   return (
-    <div>
+    <>
       {renderOpenButton(handleOpen)}
 
       <Modal
@@ -35,6 +35,6 @@ export default function BasicModal({ renderOpenButton, children }) {
           {children}
         </Box>
       </Modal>
-    </div>
+    </>
   )
 }

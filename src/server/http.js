@@ -37,8 +37,12 @@ function apiPost(url, params) {
   return $http.post(url, { json: params }).json()
 }
 
+function apiPut(url, params) {
+  return $http.put(url, { json: params }).json()
+}
+
 function apiDelete(url, params) {
   return $http.delete(url, { json: params }).json()
 }
 
-export { apiGet, apiPost, apiDelete }
+export { apiGet, apiPost, apiPut, apiDelete }
