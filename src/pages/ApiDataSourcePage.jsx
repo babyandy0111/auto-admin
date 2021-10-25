@@ -1,16 +1,20 @@
 import { LoadingButton } from '@mui/lab'
-import { Alert, Button, Grid, Paper, TextField } from '@mui/material'
+import {
+  Alert, Box, Button, Grid, Paper, TextField, Typography
+} from '@mui/material'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
-import { DataSourceTable, Select } from '../components/common'
+import { Select } from '../components/common'
+import ApiTable from '../components/common/ApiTable'
+import Modal from '../components/common/Modal'
 import { useDatabaseTest } from '../hooks'
 import API from '../server/api'
 
 const ApiDataSourcePage = () => {
   const { isLoading, data: databaseTypes } = useQuery('databaseTypes', API.getResourceDBType)
-  const { data: dataResource, refetch } = useQuery('dataResource', API.getResourceMysql)
+  const { data: dataResource = [], refetch } = useQuery('dataResource', API.getResourceMysql)
   const { t } = useTranslation(["api"])
 
   return <>
@@ -19,29 +23,72 @@ const ApiDataSourcePage = () => {
         {!isLoading && <WorkSpaceCreator databaseTypes={databaseTypes || []} onRefetch={refetch} />}
       </Grid>
       <Grid item md={12}>
-        <DataSourceTable
-          columns={
-            [
-              {
-                title: t('table.workspaceName'),
-              },
-              {
-                title: t('table.databaseType'),
-              },
-              {
-                title: t('table.createTime'),
-              },
-              {
-                title: t('table.updateTime'),
-              },
-              {
-                title: t('table.isSelfConnect'),
+        <ApiTable
+          columns={[
+            {
+              title: t('table.workspaceName'),
+              key: 'workspaceName'
+            },
+            {
+              title: t('table.databaseType'),
+              key: "databaseType"
+            },
+            {
+              title: t('table.createTime'),
+              key: 'createTime'
+            },
+            {
+              title: t('table.updateTime'),
+              key: 'updateTime'
+            },
+            {
+              title: t('table.isSelfConnect'),
+              key: 'isSelfConnect'
+            },
+            {
+              title: '',
+              key: 'mutation',
+              render: (row) => {
+                return <>
+                  {row.isSelfConnect === 'YES' && <Modal renderOpenButton={(onOpen) => <Button component="span" variant="contained" onClick={onOpen}>{t('interface.edit')}</Button>}>
+                    {(onClose) => {
+                      return <>
+                        <Typography id="modal-modal-title" variant="h6" component="h2">
+                          {t('heading.workspaceEdit', { name: row.workspaceName })}
+                        </Typography>
+                        <WorkspaceEditForm id={row.id} onRefetch={refetch} onClose={onClose} />
+                      </>
+                    }}
+                  </Modal>}
+
+                  <Modal renderOpenButton={(onOpen) => <Button sx={{ ml: 1 }} component="span" variant="contained" color="error" onClick={onOpen}>{t('interface.delete')}</Button>}>
+                    {(onClose) => <>
+                      <Typography id="modal-modal-title" variant="h6" component="h2">
+                        {t('heading.workspaceDelete')}
+                      </Typography>
+                      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        {t('text.workspaceDeleteWarming')}
+                      </Typography>
+
+                      <Box sx={{ textAlign: 'right', mt: 2 }}>
+                        <Button variant="contained" onClick={onClose}>{t('interface.cancel')}</Button>
+                        <Button variant="outlined" sx={{ ml: 1 }} color="error" onClick={() => API.deleteResourceMysql(row.id).then(refetch)}>{t('interface.delete')}</Button>
+                      </Box>
+                    </>}
+                  </Modal>
+                </>
               }
-            ]
-          }
-          data={dataResource || []}
-          onRefetch={refetch}
-          onDelete={id => API.deleteResourceMysql(id).then(refetch)}
+            }
+          ]}
+          data={dataResource.map(data => ({
+            id: data.id,
+            workspaceName: data.name,
+            databaseType: data.type,
+            createdTime: data.createdAt,
+            updatedTime: data.updatedAt,
+            isSelfConnect: data.isSelfConnect ? "YES" : "NO",
+            mutation: ''
+          }))}
         />
       </Grid>
     </Grid>
@@ -151,5 +198,63 @@ const WorkSpaceCreator = ({ databaseTypes, onRefetch }) => {
     </Paper>
   )
 }
+
+
+const WorkspaceEditForm = ({ id, onRefetch, onClose }) => {
+  const { t } = useTranslation(["api"])
+  const { register, handleSubmit, watch, getValues, reset } = useForm({
+    defaultValues: {
+      databaseName: "",
+      endpoint: "",
+      port: "",
+      username: "",
+      password: "",
+    }
+  })
+  const { test, status } = useDatabaseTest(getValues, watch)
+
+  const submit = handleSubmit((value) =>
+    API.updateResourceMysql(id, value)
+      .then(() => {
+        onRefetch?.()
+        onClose?.()
+        reset()
+      })
+      .catch(() => { })
+      .finally(() => { })
+  )
+
+  return <>
+    <Grid container sx={{ paddingTop: 2 }} rowSpacing={2} >
+      <Grid item md={12}>
+        <TextField {...register("databaseName", { required: true })} label={t('label.databaseName')} fullWidth />
+      </Grid>
+      <Grid item md={12}>
+        <TextField {...register("endpoint", { required: true })} label="Endpoint" fullWidth />
+      </Grid>
+      <Grid item md={12}>
+        <TextField {...register("port", { required: true })} label="Port" fullWidth />
+      </Grid>
+      <Grid item md={12}>
+        <TextField {...register("username", { required: true })} label="Username" fullWidth />
+      </Grid>
+      <Grid item md={12}>
+        <TextField {...register("password", { required: true })} label="Password" fullWidth />
+      </Grid>
+    </Grid>
+
+    <Box sx={{ textAlign: 'right', mt: 2 }}>
+      {status === "success" ? <Button variant="contained" onClick={submit} fullWidth>{t('interface.update')}</Button> : <LoadingButton
+        variant="outlined" fullWidth
+        color={status === 'fail' ? 'error' : undefined}
+        loading={status === "loading"}
+        onClick={test}
+      >
+        {t('interface.test')}
+      </LoadingButton>}
+    </Box>
+  </>
+}
+
 
 export default ApiDataSourcePage

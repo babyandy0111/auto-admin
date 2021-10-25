@@ -11,5 +11,6 @@ export {
   Code as CodeIcon,
   Api as ApiIcon,
   Add as AddIcon,
-  Storage as StorageIcon
+  Storage as StorageIcon,
+  Lock as LockIcon
 } from "@mui/icons-material"

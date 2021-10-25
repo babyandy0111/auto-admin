@@ -17,12 +17,13 @@ import {
   ApiIcon, ChevronLeftIcon,
   ChevronRightIcon, ExpandLessIcon,
   ExpandMoreIcon, MenuIcon,
-  AddIcon, StorageIcon
+  AddIcon, StorageIcon,
+  LockIcon
 } from '../../images/icons'
 import {
   ApiCreatePage, ApiListPage,
   ApiDataSourcePage,
-  AuthPage, DashboardPage,
+  ApiAuthPage, DashboardPage,
   DataModulePage,
   DataTableListPage,
   DomainPage,
@@ -42,7 +43,7 @@ const AppPage = () => {
         { path: "/data-source", component: ApiDataSourcePage },
         { path: "/create", component: ApiCreatePage },
         { path: "/api-list", component: ApiListPage },
-        { path: "/auth", component: AuthPage },
+        { path: "/auth", component: ApiAuthPage },
         { path: "/verify", component: VerifyPagePage },
       ]
     },
@@ -160,7 +161,7 @@ const sidebar = [
       // { text: '', path: "/table-management" },
       { text: 'Create API', icon: <AddIcon />, path: "/create" },
       // { text: '', path: "/api-list" },
-      // { text: '', path: "/auth" },
+      { text: 'Auth', icon: <LockIcon />, path: "/auth", },
       // { text: '', path: "/verify" },
     ]
   },
