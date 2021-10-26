@@ -21,7 +21,8 @@
     "cancel": "取消",
     "update": "更新",
     "delete": "刪除",
-    "test": "測試"
+    "test": "測試",
+    "stop": "停止"
   },
   "table": {
     "workspaceName": "工作空間名稱",

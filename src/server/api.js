@@ -45,6 +45,9 @@ const API = {
           : undefined,
     })
   },
+  postAuthKeys({ keyName }) {
+    return apiPost("auth-keys", { name: keyName })
+  },
   // get
   getLogsMetrics(params) {
     return apiGet("logs/metrics", params)
@@ -103,6 +106,24 @@ const API = {
   },
   getStorage(params) {
     return apiGet("storage/list-files", params)
+  },
+  getAuthKey(params) {
+    return apiGet("auth-keys", {
+      page: 1,
+      per_page: 20,
+      ...params,
+    }).then(res =>
+      res.auth_keys.map(v => {
+        return {
+          id: v.id,
+          name: v.name,
+          isDisabled: Boolean(v.is_disable),
+          privateKey: v.private_key,
+          publicKey: v.public_key,
+          createdAt: day(v.created_at).format("YYYY-MM-DD HH:mm:ss"),
+        }
+      }),
+    )
   },
   // update
   updateResourceMysql(id, { databaseName, endpoint, port, username, password }) {
