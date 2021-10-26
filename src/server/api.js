@@ -143,4 +143,57 @@ const API = {
   },
 }
 
+const ApiResource = {
+  resourceMySql: {
+    get() {},
+    getTableUser(id) {
+      return apiGet(`resources/mysql/${id}/tables/user`)
+    },
+    getTables(id) {
+      return apiGet(`resources/mysql/${id}/tables`)
+    },
+    getTable(id, tableName) {
+      return apiGet(`resources/mysql/${id}/tables/${tableName}`)
+    },
+    post() {},
+    put(id, { databaseName, endpoint, port, username, password }) {
+      return apiPut(`resources/mysql/${id}`, {
+        info: {
+          database_name: databaseName,
+          endpoint,
+          password,
+          port,
+          username,
+        },
+      })
+    },
+    delete(id) {
+      return apiDelete(`resources/mysql/${id}`)
+    },
+  },
+  endpointVerifications: {
+    get() {
+      return apiGet("endpoint-verifications", {
+        page: 1,
+        per_page: 20,
+      }).then(res => {
+        return res.endpoint_verifications.map(v => ({ id: v.id, name: v.name }))
+      })
+    },
+  },
+  endpointVerification: {
+    get(id) {
+      return apiGet(`endpoint-verifications/${id}`)
+    },
+  },
+}
+
+// 我的 API 要如何管理比較方便
+// 方便新增，方便修改
+
+// 如何管理這些 RestFul API ？
+// 在 graphql 我是如何管理這些 API 的？
+
+export { ApiResource }
+
 export default API

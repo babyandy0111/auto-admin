@@ -22,8 +22,10 @@ import {
   FactCheckIcon
 } from '../../images/icons'
 import {
-  ApiCreatePage, ApiListPage,
+  ApiCreatePage,
+  ApiListPage,
   ApiDataSourcePage,
+  ApiVerifyPage,
   ApiAuthPage, DashboardPage,
   DataModulePage,
   DataTableListPage,
@@ -31,7 +33,6 @@ import {
   ErdPage,
   MarketplacePage,
   UseMarketplacePage,
-  VerifyPagePage
 } from "../pages"
 const AppPage = () => {
   const theme = useTheme()
@@ -45,7 +46,7 @@ const AppPage = () => {
         { path: "/create", component: ApiCreatePage },
         { path: "/api-list", component: ApiListPage },
         { path: "/auth", component: ApiAuthPage },
-        { path: "/verify", component: VerifyPagePage },
+        { path: "/verify", component: ApiVerifyPage },
       ]
     },
     {
