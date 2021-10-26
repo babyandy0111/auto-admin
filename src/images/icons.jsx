@@ -12,5 +12,6 @@ export {
   Api as ApiIcon,
   Add as AddIcon,
   Storage as StorageIcon,
-  Lock as LockIcon
+  Lock as LockIcon,
+  FactCheck as FactCheckIcon
 } from "@mui/icons-material"

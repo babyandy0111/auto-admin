@@ -18,7 +18,8 @@ import {
   ChevronRightIcon, ExpandLessIcon,
   ExpandMoreIcon, MenuIcon,
   AddIcon, StorageIcon,
-  LockIcon
+  LockIcon,
+  FactCheckIcon
 } from '../../images/icons'
 import {
   ApiCreatePage, ApiListPage,
@@ -162,7 +163,7 @@ const sidebar = [
       { text: 'Create API', icon: <AddIcon />, path: "/create" },
       // { text: '', path: "/api-list" },
       { text: 'Auth', icon: <LockIcon />, path: "/auth", },
-      // { text: '', path: "/verify" },
+      { text: 'Verify', icon: <FactCheckIcon />, path: "/verify" },
     ]
   },
   // {
