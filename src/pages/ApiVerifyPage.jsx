@@ -7,10 +7,11 @@ import { Select } from '../components/common'
 import API, { ApiResource } from '../server/api'
 import { apiGet } from '../server/http'
 import { useForm, Controller } from 'react-hook-form';
+import FormTable from '../components/common/FormTable';
 
 const ApiVerifyPage = () => {
   const { t } = useTranslation()
-  const { isLoading, data: endpointVerifications = [] } = useQuery('endpointVerifications', ApiResource.endpointVerifications.get)
+  const { isLoading, data: endpointVerifications = [] } = useQuery('endpointVerifications', () => ApiResource.endpointVerifications.get())
   const [value, setValue] = useState('')
 
   useEffect(() => {
@@ -50,7 +51,7 @@ const ApiVerifyPage = () => {
 const VerificationSettingBlock = ({ id }) => {
   const { t } = useTranslation()
 
-  const { register, control, setValue, getValues } = useForm({
+  const { register, control, setValue, getValues, watch } = useForm({
     defaultValues: {
       name: '',
       subdomainId: '',
@@ -58,7 +59,16 @@ const VerificationSettingBlock = ({ id }) => {
       tableName: ''
     }
   })
-  useQuery('endpointVerification', () => ApiResource.endpointVerification.get(id), {
+  const [resourceId, tableName] = watch(["resourceId", "tableName"])
+
+  const { data } = useQuery('endpointVerification', () => ApiResource.endpointVerification.get(id).then(res => ({
+    id: res.id,
+    name: res.name,
+    fields: res.request_info.map(v => ({
+      fieldName: v.filed_name,
+      aliasName: v.alias_name
+    }))
+  })), {
     onSuccess: (data) => setValue('name', data.name)
   })
   const { data: subdomains = [] } = useQuery('subdomains', () => apiGet("resources/subdomain", {
@@ -75,22 +85,6 @@ const VerificationSettingBlock = ({ id }) => {
     // The query will not execute until the userId exists
     enabled: !!getValues('resourceId'),
   })
-
-  useEffect(() => {
-    if (subdomains[0]) {
-      setValue('subdomainId', subdomains[0].id)
-    }
-  })
-  useEffect(() => {
-    if (resources[0]) {
-      setValue('resourceId', resources[0].id)
-    }
-  }, [resources, setValue])
-  useEffect(() => {
-    if (tableNames?.[0]) {
-      setValue('tableName', tableNames[0].id)
-    }
-  }, [tableNames, setValue])
 
   return <>
     <Paper>
@@ -160,18 +154,49 @@ const VerificationSettingBlock = ({ id }) => {
           />
         </Grid>
         <Grid item md={12}>
-          {/* table */}
+          {!!(resourceId && tableNames && data) && <ApiFormTable resourceId={resourceId} tableName={tableName} fields={data.fields} />}
         </Grid>
       </Grid>
     </Paper>
   </>
 }
 
-// const VerifyTable = () => {
-//   const { data: table = [] } = useQuery('table', () => apiGet(`resources/mysql/${resourceId}/tables/${tables[0].name}`))
+const ApiFormTable = ({ resourceId, tableName, fields }) => {
+  const { t } = useTranslation()
+  const { data: rows = [] } = useQuery('table', () => apiGet(`resources/mysql/${resourceId}/tables/${tableName}`)
+    .then((res) => res.columns.map(v => ({
+      name: v.name,
+      fieldType: v.field_type,
+      comment: v.comment,
+      defaultValue: v.default_value
+    }))), {
 
-//   return <div></div>
-// }
+  })
+
+  console.log({ rows, fields })
+  // return <></>
+  return <FormTable columns={
+    [
+      {
+        title: t('table.name'),
+        key: "name"
+      },
+      {
+        title: t('table.fieldType'),
+        key: "fieldType"
+      },
+      {
+        title: t('table.comment'),
+        key: "comment"
+      },
+      {
+        title: t('table.defaultValue'),
+        key: "defaultValue"
+      }
+    ]}
+    data={rows}
+  />
+}
 
 // utils camelCase to snakeCase
 
